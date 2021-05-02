@@ -11,8 +11,7 @@
 
 
 <meta name="author" content="Lorenzo Fiore" />
-<meta name="description" content="Motivation, background and context At my first working experience as a mechanical engineer in a manufacturing company for the railway industry I has been requested to perform static structural analysis on riveted structures. It was a riveted structure and I&amp;rsquo;m talking about a couple hundreds rivets.
-" />
+<meta name="description" content="An example workflow for automating time consuming tasks in Ansys Mechanical" />
 
 
 
@@ -22,10 +21,7 @@
 
 
 <meta property="og:title" content="Ansys Automation" />
-<meta property="og:description" content="Motivation, background and context
-At my first working experience as a mechanical engineer in a manufacturing company for the railway industry
-I has been requested to perform static structural analysis on riveted structures.
-It was a riveted structure and I&rsquo;m talking about a couple hundreds rivets." />
+<meta property="og:description" content="An example workflow for automating time consuming tasks in Ansys Mechanical" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://MechEngrLorenzoFiore.github.io/posts/ansys_automation/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-04-29T23:20:04&#43;02:00" />
@@ -36,10 +32,7 @@ It was a riveted structure and I&rsquo;m talking about a couple hundreds rivets.
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Ansys Automation"/>
-<meta name="twitter:description" content="Motivation, background and context
-At my first working experience as a mechanical engineer in a manufacturing company for the railway industry
-I has been requested to perform static structural analysis on riveted structures.
-It was a riveted structure and I&rsquo;m talking about a couple hundreds rivets."/>
+<meta name="twitter:description" content="An example workflow for automating time consuming tasks in Ansys Mechanical"/>
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
@@ -126,6 +119,7 @@ It was a riveted structure and I&rsquo;m talking about a couple hundreds rivets.
     <li><a href="#challenges-i-faced">Challenges I faced</a>
       <ul>
         <li><a href="#brainstorming">Brainstorming</a></li>
+        <li><a href="#research">Research</a></li>
       </ul>
     </li>
     <li><a href="#useful-lessons-i-learned">Useful lessons I learned</a></li>
@@ -156,7 +150,7 @@ It was a riveted structure and I&rsquo;m talking about a couple hundreds rivets.
                   
                 
 
-              | 2 minutes read
+              | 4 minutes read
 
               
               | Update at
@@ -191,18 +185,62 @@ It was a riveted structure and I&rsquo;m talking about a couple hundreds rivets.
         
 
         <h2 id="motivation-background-and-context">Motivation, background and context</h2>
-<p>At my first working experience as a mechanical engineer in a manufacturing company for the railway industry
-I has been requested to perform static structural analysis on riveted structures.
-It was a riveted structure and I&rsquo;m talking about a couple hundreds rivets.</p>
-<p>Not a big deal you would say.
-Well it was a big deal, a very big one since the engineer who was in charge of the analysis specifically told me to prepare the model in Ansys Mechanical by defining the riveted joints as revolute joints for each individual rivet. I spent an entire afternoon manually selecting and coupling the edges of the parts in correspondence of the rivet joint to correctly defining the coupling between the parts. And the worst part of the tale is that that senior engineer told me he had spent months performing similar tasks.</p>
+<p>At my first working experience as a mechanical engineer in a manufacturing company for the railway industry they asked me to perform static structural analysis on riveted structures. I&rsquo;m talking about a couple hundreds rivets for structure.
+Not a big deal you would say.</p>
+<p>Well it was a big deal, a very big one since the engineer who was in charge of the analysis specifically told me to prepare the model in Ansys Mechanical by defining the riveted joints as revolute joints for each individual rivet. I spent an entire afternoon manually selecting and coupling the edges of the parts in correspondence of the rivet joint edges to correctly define the coupling between the parts. And the worst part of the tale is that that senior engineer told me he had spent a very big deal of time performing similar tasks.</p>
 <p>At this point one could basically choose between two different philosophies of life: simply get the job done or go through the effort of finding a better, and possibly cleverer, way of getting the job done. I&rsquo;m more of the second philosophy.</p>
 <h2 id="challenges-i-faced">Challenges I faced</h2>
-<p>So, to put things clear, I&rsquo;ve got a 3D model with a few dozen sheet metal parts with corresponding holes for the rivets that should keep everything together and I&rsquo;m in charge of individually define a revolute joint in Ansys Mechanical for each rivet to prepare the model for the structural analysis. I spent an afternoon manually performing the task and studying the command palette in desperate hope to find some useful automation and finally I got home with more than half the job wet to be done.</p>
-<p>As you probably understood by this time I&rsquo;m not the type to give up easily. As soon as I got home I started tackling the problem my own way.</p>
+<p>So, to put things clear, I&rsquo;ve got a 3D model with a few dozen sheet metal parts with corresponding holes for the rivets that should keep everything together and I&rsquo;m in charge of individually define a revolute joints in Ansys Mechanical for each rivet to prepare the model for the structural analysis. I spent an afternoon manually performing the task and studying the command palette in desperate hope to find some useful automation and finally I got home with more than half the job wet to be done.</p>
+<p>As you probably understood by this time I&rsquo;m not the type to give up easily. As soon as I got home I started tackling the problem in my own way.</p>
 <h3 id="brainstorming">Brainstorming</h3>
-<p>I know this task can be automated. I spent a lot of time at University working with APDL and I know enough of how it &ldquo;thinks&rdquo;</p>
+<p>I knew this task could be automated. I spent a lot of time at University working with APDL and I knew enough of how ANSYS &ldquo;thinks&rdquo;. The first idea which came up to my mind was to try reproduce the same constrain by command line in APDL and then use an APDL command snippet in Mechanical. A little bit of research showed me that this was not possible since APDL command snippets in Mechanical can be executed only to operate on the solution information, not on the model preparation (even if the solution itself is obtained leveraging APDL under the Mechanical interface).</p>
+<p>So the operation had to be automated inside Mechanical, there was no easy way out.
+Mechanical has got an Automation palette whose purpose is exactly that of let the user automate tedious tasks and there&rsquo;s even a python command line inteface to be used with the provided API, but my attention was caught by the Object Generator palette. That was the easy solution I was looking for.</p>
+<h3 id="research">Research</h3>
+<p>A little bit of investigation taught me that Object Generator works by applying user-defined structures to whatever element is indicated by appropriate named selections, so my attention switched to that subject: if I could find a way of grouping the holes edges of each sheet metal part into a named selection I would have my problem solved!</p>
+<p>Even in this case I was sure that the named selection definition could be automated and I also found that when saving Mechanical outputs t be read by APDL the defined named selections are actually read by APDL as CM COMPONENTS. But in this case I found an easier solution directly inside Mechanical: named selections Worksheet definition. By setting some filters and operations, it&rsquo;s actually possible to quickly define named selections for the interested items. At this point using Object Generator makes it easy to define whatever contact type needed.</p>
 <h2 id="useful-lessons-i-learned">Useful lessons I learned</h2>
+<p>In the above paragraphs I explained my motivation and the path which led me to the solution of my problem, here I&rsquo;ll quickly provide useful hints by mean of an example study (the kind of thing I was desperately looking for when I started this little journey).</p>
+<ul>
+<li>First of all, gather the assembly 3D model and import that in Ansys Mechanical</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="/img/post_Ansys_Automation/asm_rivettato.png" alt="CAD 3D model"></th>
+<th style="text-align:center"><img src="/img/post_Ansys_Automation/ansys_geom.png" alt="3D model in Ansys"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">CAD 3D model</td>
+<td style="text-align:center">3D model in Ansys</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>By default Ansys defines contacts between adjacent regions, delete them</li>
+</ul>
+<p>: <img src="/img/post_Ansys_Automation/ansys_conctact.png" alt="ansys default contacts"></p>
+<ul>
+<li>
+<p>Generate one contact the way you need it</p>
+</li>
+<li>
+<p>Create a new named selection and set the scope to WorkSheet, then apply the filters and operators you need</p>
+</li>
+</ul>
+<p><img src="/img/post_Ansys_Automation/ansys_ns.png" alt="ansys named selections"></p>
+<ul>
+<li>Use the Object Generator to iterate the definition of the custom contact on the elements of the named selections.</li>
+</ul>
+<p><img src="/img/post_Ansys_Automation/ansys_obj_gen.png" alt="ansys Object Generator"></p>
+<ul>
+<li>Never forget to check for eventual errors. Computer Aided Engineering does not mean the computer is in charge of design and evaluation errors. For this kind of check I find the body views tool in Ansys particularly useful.</li>
+</ul>
+<p><img src="/img/post_Ansys_Automation/ansys_body_views.png" alt="ansys Object Generator"></p>
+<p>That&rsquo;s it! I hope this information would be of any interest to anyone facing my same challenge!</p>
+
       </article>
     </section>
 
@@ -298,7 +336,7 @@ Well it was a big deal, a very big one since the engineer who was in charge of t
   <div class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
     <article class="ui segment markdown-body">
       <div class="ui medium header">Once a Scout, always a Scout!</div>
-      <p>I&rsquo;m proudly a member of the World Wide Scout Movement.</p>
+      <p>I&rsquo;m a proud member of the World Wide Scout Movement.</p>
 <blockquote>
 <p>Try and leave this world a little better than you found it,
 and when your turn comes to die,
@@ -317,11 +355,12 @@ you have not wasted your time but have done your best.</p>
       <p>If you came up here you want to know a little bit more about myself.
 That&rsquo;s awesome!</p>
 <p>I&rsquo;m a mechanical engineer, a curious person and a maker!
-I dont' waste any time trying to learn everything I can about the
-topic I love the most, be it mechanical design, proogramming, old school hand abilities, music, languages, you name it!</p>
-<p>This websites scope is to share my knowledge and experience hoping
+I don&rsquo;t waste any time trying to learn everything I can about the
+topic I love the most, be it mechanical design, programming,
+old school hand abilities, music, languages, you name it!</p>
+<p>This websites purpose is to share my knowledge and experience hoping
 this would be of any help for anyone facing the challenges I face.
-Enjoy and let&rsquo;s stay in conctanct!</p>
+Enjoy and let&rsquo;s stay in contact!</p>
     </article>
   </div>
   
