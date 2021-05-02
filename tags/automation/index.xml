@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Automation on MechEngrLorenzoFiore</title>
+    <link>https://MechEngrLorenzoFiore.github.io/tags/automation/</link>
+    <description>Recent content in Automation on MechEngrLorenzoFiore</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 29 Apr 2021 23:20:04 +0200</lastBuildDate><atom:link href="https://MechEngrLorenzoFiore.github.io/tags/automation/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ansys Automation</title>
+      <link>https://MechEngrLorenzoFiore.github.io/posts/ansys_automation/</link>
+      <pubDate>Thu, 29 Apr 2021 23:20:04 +0200</pubDate>
+      
+      <guid>https://MechEngrLorenzoFiore.github.io/posts/ansys_automation/</guid>
+      <description>&lt;h2 id=&#34;motivation-background-and-context&#34;&gt;Motivation, background and context&lt;/h2&gt;
+&lt;p&gt;At my first working experience as a mechanical engineer in a manufacturing company for the railway industry
+I has been requested to perform static structural analysis on riveted structures.
+It was a riveted structure and I&amp;rsquo;m talking about a couple hundreds rivets.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

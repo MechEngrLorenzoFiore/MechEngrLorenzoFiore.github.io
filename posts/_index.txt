@@ -1,0 +1,11 @@
+---
+title: "About"
+date: 2021-05-02T12:07:08+02:00
+draft: false
+---
+This is the collection of all posts of this blog. 
+
+Every post is meant to share the knowledge and experience
+I gathered by facing technical challenges in my work as a Mechanical Engineer and in my private life. I hope this could be of any help to 
+anyone facing the same challenges.
+Enjoy and let's stay in contact! 
