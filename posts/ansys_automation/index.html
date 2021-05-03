@@ -115,7 +115,7 @@
     <div class="ui segment toc">
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#motivation-background-and-context">Motivation, background and context</a></li>
+    <li><a href="#motivation-and-context">Motivation and context</a></li>
     <li><a href="#challenges-i-faced">Challenges I faced</a>
       <ul>
         <li><a href="#brainstorming">Brainstorming</a></li>
@@ -150,15 +150,8 @@
                   
                 
 
-              | 4 minutes read
+              | 3 minutes read
 
-              
-              | Update at
-                
-                  
-                    Thursday, Apr 29, 2021
-                  
-                
               
             </div>
 
@@ -184,21 +177,17 @@
       <article class="main">
         
 
-        <h2 id="motivation-background-and-context">Motivation, background and context</h2>
-<p>At my first working experience as a mechanical engineer in a manufacturing company for the railway industry they asked me to perform static structural analysis on riveted structures. I&rsquo;m talking about a couple hundreds rivets for structure.
-Not a big deal you would say.</p>
-<p>Well it was a big deal, a very big one since the engineer who was in charge of the analysis specifically told me to prepare the model in Ansys Mechanical by defining the riveted joints as revolute joints for each individual rivet. I spent an entire afternoon manually selecting and coupling the edges of the parts in correspondence of the rivet joint edges to correctly define the coupling between the parts. And the worst part of the tale is that that senior engineer told me he had spent a very big deal of time performing similar tasks.</p>
-<p>At this point one could basically choose between two different philosophies of life: simply get the job done or go through the effort of finding a better, and possibly cleverer, way of getting the job done. I&rsquo;m more of the second philosophy.</p>
+        <h2 id="motivation-and-context">Motivation and context</h2>
+<p>Motivation for this post aroused by the necessity of automating the time consuming task of defining constrains for riveted structures in Ansys Mechanical for an example case study.</p>
 <h2 id="challenges-i-faced">Challenges I faced</h2>
-<p>So, to put things clear, I&rsquo;ve got a 3D model with a few dozen sheet metal parts with corresponding holes for the rivets that should keep everything together and I&rsquo;m in charge of individually define a revolute joints in Ansys Mechanical for each rivet to prepare the model for the structural analysis. I spent an afternoon manually performing the task and studying the command palette in desperate hope to find some useful automation and finally I got home with more than half the job wet to be done.</p>
-<p>As you probably understood by this time I&rsquo;m not the type to give up easily. As soon as I got home I started tackling the problem in my own way.</p>
+<p>So, to put things clear, I&rsquo;ve got a 3D model with a few dozen sheet metal parts with corresponding holes for the rivets that should keep everything together and I need to individually define a constrain in Ansys Mechanical for each rivet to prepare the model for the structural analysis. I spent an afternoon manually performing the task and studying the command palette in desperate hope to find some useful automation after which I decided the problem was worthy of being dealt with seriously.</p>
 <h3 id="brainstorming">Brainstorming</h3>
-<p>I knew this task could be automated. I spent a lot of time at University working with APDL and I knew enough of how ANSYS &ldquo;thinks&rdquo;. The first idea which came up to my mind was to try reproduce the same constrain by command line in APDL and then use an APDL command snippet in Mechanical. A little bit of research showed me that this was not possible since APDL command snippets in Mechanical can be executed only to operate on the solution information, not on the model preparation (even if the solution itself is obtained leveraging APDL under the Mechanical interface).</p>
+<p>I knew this task could be automated. I spent a lot of time at University working with APDL and I knew enough of Ansys for being sure about that. The first idea which came up to my mind was to try reproduce the same constrain by command line in APDL and then use an APDL command snippet in Mechanical. A little bit of research showed me that this was not possible since APDL command snippets in Mechanical can be executed only to operate on the solution information, not on the model preparation (even if the solution itself is obtained leveraging APDL under the Mechanical interface).</p>
 <p>So the operation had to be automated inside Mechanical, there was no easy way out.
-Mechanical has got an Automation palette whose purpose is exactly that of let the user automate tedious tasks and there&rsquo;s even a python command line inteface to be used with the provided API, but my attention was caught by the Object Generator palette. That was the easy solution I was looking for.</p>
+Mechanical has got an Automation palette whose purpose is exactly that of let the user automate tedious tasks and there&rsquo;s even a python command line interface to be used with the provided API, but my attention was caught by the Object Generator palette. That was the easy solution I was looking for.</p>
 <h3 id="research">Research</h3>
 <p>A little bit of investigation taught me that Object Generator works by applying user-defined structures to whatever element is indicated by appropriate named selections, so my attention switched to that subject: if I could find a way of grouping the holes edges of each sheet metal part into a named selection I would have my problem solved!</p>
-<p>Even in this case I was sure that the named selection definition could be automated and I also found that when saving Mechanical outputs t be read by APDL the defined named selections are actually read by APDL as CM COMPONENTS. But in this case I found an easier solution directly inside Mechanical: named selections Worksheet definition. By setting some filters and operations, it&rsquo;s actually possible to quickly define named selections for the interested items. At this point using Object Generator makes it easy to define whatever contact type needed.</p>
+<p>Even in this case I was sure that the named selection definition could be automated and I also found that when saving Mechanical outputs to be read by APDL the defined named selections are actually read by APDL as CM COMPONENTS. But in this case I found an easier solution directly inside Mechanical: named selections Worksheet definition. By setting some filters and operations, it&rsquo;s actually possible to quickly define named selections for the interested items. At this point using Object Generator makes it easy to define whatever contact type needed.</p>
 <h2 id="useful-lessons-i-learned">Useful lessons I learned</h2>
 <p>In the above paragraphs I explained my motivation and the path which led me to the solution of my problem, here I&rsquo;ll quickly provide useful hints by mean of an example study (the kind of thing I was desperately looking for when I started this little journey).</p>
 <ul>
@@ -219,10 +208,9 @@ Mechanical has got an Automation palette whose purpose is exactly that of let th
 </tbody>
 </table>
 <ul>
-<li>By default Ansys defines contacts between adjacent regions, delete them</li>
-</ul>
-<p><img src="/img/post_Ansys_Automation/ansys_conctact.png" alt="ansys default contacts"></p>
-<ul>
+<li>
+<p>By default Ansys defines contacts between adjacent regions, delete them</p>
+</li>
 <li>
 <p>Generate one contact the way you need it</p>
 </li>
@@ -230,15 +218,23 @@ Mechanical has got an Automation palette whose purpose is exactly that of let th
 <p>Create a new named selection and set the scope to WorkSheet, then apply the filters and operators you need</p>
 </li>
 </ul>
-<p><img src="/img/post_Ansys_Automation/ansys_ns.png" alt="ansys named selections"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="/img/post_Ansys_Automation/ansys_conctact.png" alt="ansys default contacts"></th>
+<th style="text-align:center"><img src="/img/post_Ansys_Automation/ansys_ns.png" alt="ansys named selections"></th>
+</tr>
+</thead>
+</table>
 <ul>
-<li>Use the Object Generator to iterate the definition of the custom contact on the elements of the named selections.</li>
+<li>
+<p>Use the Object Generator to iterate the definition of the custom contact on the elements of the named selections.</p>
+</li>
+<li>
+<p>Never forget to check for eventual errors. Computer Aided Engineering does not mean the computer is in charge of design and evaluation errors. For this kind of check I find the body views tool in Ansys particularly useful.</p>
+</li>
 </ul>
-<p><img src="/img/post_Ansys_Automation/ansys_obj_gen.png" alt="ansys Object Generator"></p>
-<ul>
-<li>Never forget to check for eventual errors. Computer Aided Engineering does not mean the computer is in charge of design and evaluation errors. For this kind of check I find the body views tool in Ansys particularly useful.</li>
-</ul>
-<p><img src="/img/post_Ansys_Automation/ansys_body_views.png" alt="ansys Object Generator"></p>
+<p><img src="/img/post_Ansys_Automation/ansys_obj_gen.png" alt="ansys Object Generator"> | <img src="/img/post_Ansys_Automation/ansys_body_views.png" alt="ansys Object Generator"></p>
 <p>That&rsquo;s it! I hope this information would be of any interest to anyone facing my same challenge!</p>
 
       </article>
