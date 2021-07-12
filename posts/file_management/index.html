@@ -4,35 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Ansys Automation | MechEngrLorenzoFiore</title>
+    <title>On CAD file management | MechEngrLorenzoFiore</title>
 
     
 
 
 
 <meta name="author" content="Lorenzo Fiore" />
-<meta name="description" content="An example workflow for automating time consuming tasks in Ansys Mechanical" />
+<meta name="description" content="Some reflections about file management of CAD files." />
 
 
 
 <meta name="generator" content="Hugo 0.82.0" />
 
-<link rel="canonical" href="https://MechEngrLorenzoFiore.github.io/posts/ansys_automation/" />
+<link rel="canonical" href="https://MechEngrLorenzoFiore.github.io/posts/file_management/" />
 
 
-<meta property="og:title" content="Ansys Automation" />
-<meta property="og:description" content="An example workflow for automating time consuming tasks in Ansys Mechanical" />
+<meta property="og:title" content="On CAD file management" />
+<meta property="og:description" content="Some reflections about file management of CAD files." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://MechEngrLorenzoFiore.github.io/posts/ansys_automation/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-04-29T23:20:04&#43;02:00" />
-<meta property="article:modified_time" content="2021-04-29T23:20:04&#43;02:00" />
+<meta property="og:url" content="https://MechEngrLorenzoFiore.github.io/posts/file_management/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-05-27T23:25:00&#43;02:00" />
+<meta property="article:modified_time" content="2021-05-27T23:25:00&#43;02:00" />
 
 
 
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Ansys Automation"/>
-<meta name="twitter:description" content="An example workflow for automating time consuming tasks in Ansys Mechanical"/>
+<meta name="twitter:title" content="On CAD file management"/>
+<meta name="twitter:description" content="Some reflections about file management of CAD files."/>
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
@@ -116,13 +116,9 @@
       <nav id="TableOfContents">
   <ul>
     <li><a href="#motivation-and-context">Motivation and context</a></li>
-    <li><a href="#challenges-i-faced">Challenges I faced</a>
-      <ul>
-        <li><a href="#brainstorming">Brainstorming</a></li>
-        <li><a href="#research">Research</a></li>
-      </ul>
-    </li>
-    <li><a href="#useful-lessons-i-learned">Useful lessons I learned</a></li>
+    <li><a href="#the-wide-world-of-version-control-systems">The wide world of version control systems</a></li>
+    <li><a href="#tips-and-tricks-for-file-management">Tips and tricks for file management</a></li>
+    <li><a href="#experiments-on-using-git-with-cad-files">Experiments on using git with CAD files</a></li>
   </ul>
 </nav>
     </div>
@@ -135,7 +131,7 @@
   <div class="sixteen wide mobile sixteen wide tablet ten wide computer column markdown-body dream-single" id="dream-save-post-as-img">
     <section class="ui top attached segment">
       <header>
-        <h1 class="ui large header">Ansys Automation<div class="sub header">
+        <h1 class="ui large header">On CAD file management<div class="sub header">
             <div class="left">
               @
               
@@ -146,11 +142,11 @@
 
               | 
                   
-                    Thursday, Apr 29, 2021
+                    Thursday, May 27, 2021
                   
                 
 
-              | 3 minutes read
+              | 6 minutes read
 
               
             </div>
@@ -178,63 +174,58 @@
         
 
         <h2 id="motivation-and-context">Motivation and context</h2>
-<p>Motivation for this post aroused by the necessity of automating the time consuming task of defining constrains for riveted structures in Ansys Mechanical for an example case study.</p>
-<h2 id="challenges-i-faced">Challenges I faced</h2>
-<p>So, to put things clear, I&rsquo;ve got a 3D model with a few dozen sheet metal parts with corresponding holes for the rivets that should keep everything together and I need to individually define a constrain in Ansys Mechanical for each rivet to prepare the model for the structural analysis. I spent an afternoon manually performing the task and studying the command palette in desperate hope to find some useful automation after which I decided the problem was worthy of being dealt with seriously.</p>
-<h3 id="brainstorming">Brainstorming</h3>
-<p>I knew this task could be automated. I spent a lot of time at University working with APDL and I knew enough of Ansys for being sure about that. The first idea which came up to my mind was to try reproduce the same constrain by command line in APDL and then use an APDL command snippet in Mechanical. A little bit of research showed me that this was not possible since APDL command snippets in Mechanical can be executed only to operate on the solution information, not on the model preparation (even if the solution itself is obtained leveraging APDL under the Mechanical interface).</p>
-<p>So the operation had to be automated inside Mechanical, there was no easy way out.
-Mechanical has got an Automation palette whose purpose is exactly that of let the user automate tedious tasks and there&rsquo;s even a python command line interface to be used with the provided API, but my attention was caught by the Object Generator palette. That was the easy solution I was looking for.</p>
-<h3 id="research">Research</h3>
-<p>A little bit of investigation taught me that Object Generator works by applying user-defined structures to whatever element is indicated by appropriate named selections, so my attention switched to that subject: if I could find a way of grouping the holes edges of each sheet metal part into a named selection I would have my problem solved!</p>
-<p>Even in this case I was sure that the named selection definition could be automated and I also found that when saving Mechanical outputs to be read by APDL the defined named selections are actually read by APDL as CM COMPONENTS. But in this case I found an easier solution directly inside Mechanical: named selections Worksheet definition. By setting some filters and operations, it&rsquo;s actually possible to quickly define named selections for the interested items. At this point using Object Generator makes it easy to define whatever contact type needed.</p>
-<h2 id="useful-lessons-i-learned">Useful lessons I learned</h2>
-<p>In the above paragraphs I explained my motivation and the path which led me to the solution of my problem, here I&rsquo;ll quickly provide useful hints by mean of an example study (the kind of thing I was desperately looking for when I started this little journey).</p>
+<p>Computer Aided Design is awesome. This is an ambiguous statement. During the last few decades CAD has radically changed the way engineers develop ideas and concepts, explore solutions and design products. CAD has become so important in every industry that you basically couldn&rsquo;t find a single job insertion that does not cite a specific CAD package in use by the company whose knowledge is requested as basic requirement for candidates.</p>
+<p>Despite its undisputed advantages CAD design also has some major drawbacks and among those one that I&rsquo;m particularly keen on is file management.</p>
+<p>Imagine this situation: as a design engineer you are requested to design a part which has to fit into an existing assembly, respect some requirements and perform some function.</p>
+<p>Based on the informations you have, you begin to study the possible available solutions. Beside all the engineering efforts related to ensure that the part can actually perform its functions, you also have to take into account:</p>
 <ul>
-<li>First of all, gather the assembly 3D model and import that in Ansys Mechanical</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th style="text-align:center"><img src="/img/post_Ansys_Automation/asm_rivettato.png" alt="CAD 3D model"></th>
-<th style="text-align:center"><img src="/img/post_Ansys_Automation/ansys_geom.png" alt="3D model in Ansys"></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">CAD 3D model</td>
-<td style="text-align:center">3D model in Ansys</td>
-</tr>
-</tbody>
-</table>
+<li>structural feasibility</li>
+<li>material choice and its cost</li>
+<li>tolerance requirements</li>
+<li>the manufacturing technologies at your disposal
 <ul>
-<li>
-<p>By default Ansys defines contacts between adjacent regions, delete them</p>
-</li>
-<li>
-<p>Generate one contact the way you need it</p>
-</li>
-<li>
-<p>Create a new named selection and set the scope to WorkSheet, then apply the filters and operators you need</p>
-</li>
+<li>eventual tooling needed</li>
 </ul>
-<table>
-<thead>
-<tr>
-<th style="text-align:center"><img src="/img/post_Ansys_Automation/ansys_conctact.png" alt="ansys default contacts"></th>
-<th style="text-align:center"><img src="/img/post_Ansys_Automation/ansys_ns.png" alt="ansys named selections"></th>
-</tr>
-</thead>
-</table>
+</li>
+<li>the possibility of manufacturing the part as an assembly of multiple sub-parts, and in that case:
 <ul>
-<li>
-<p>Use the Object Generator to iterate the definition of the custom contact on the elements of the named selections.</p>
-</li>
-<li>
-<p>Never forget to check for eventual errors. Computer Aided Engineering does not mean the computer is in charge of design and evaluation errors. For this kind of check I find the body views tool in Ansys particularly useful.</p>
-</li>
+<li>the join technologies</li>
+<li>eventual need to disassembly</li>
 </ul>
-<p><img src="/img/post_Ansys_Automation/ansys_obj_gen.png" alt="ansys Object Generator"> | <img src="/img/post_Ansys_Automation/ansys_body_views.png" alt="ansys Object Generator"></p>
+</li>
+<li>lead time</li>
+</ul>
+<p>And those are only some of the considerations to make. In real world situations all those considerations are interconnected and converging into a unique solution is often hard. The more frequent case is that of having multiple coexisting proposals, each resulting from a combination of choices.</p>
+<p><strong>Going thought this engineering hell</strong>, you carry out the design task and present your solutions to your supervisor, or your direct client, which will examine the project, both the 3D file and the 2D drawings of it, and come back to you with eventual questions and&hellip; usually&hellip; more requirements to fulfill and changed requirements.</p>
+<p>That&rsquo;s it, that&rsquo;s the life of a design engineer.</p>
+<p>I&rsquo;m joking of course. The cycle of requirements, proposals and feedbacks ensures that the client receives as a final product exactly what he/she needs and being able to present and discuss ideas is a fundamental skill for an engineer. It&rsquo;s important to keep in mind that the basic definition of the profession of engineer is that of a guy who is able to solve technical problems (not that of a guy who is able to 3D design).</p>
+<p>Anyway, after a couple of those cycles of proposals and feedbacks your can find yourself in two possible situations:</p>
+<ul>
+<li>you have always updated one only 3D file and don&rsquo;t have any idea of what your original proposal was;</li>
+<li>you have created a different copy of your file for each new change to the project resulting in a ton of different files and folders and&hellip; you don&rsquo;t have any idea of what your original proposal was since you can&rsquo;t remember the file name of it.</li>
+</ul>
+<p>Beyond the jokes, file management can become really messy even for simple projects and have an organized way of deal with this issue is mandatory for a good project management.</p>
+<p>Besides you could be required to came back to the state the project was some iterations ago so keeping track of the changes is really important.</p>
+<h2 id="the-wide-world-of-version-control-systems">The wide world of version control systems</h2>
+<p>These problems aren&rsquo;t related only to 3D design, software developers have identified and managed them through very useful pieces of software: version control systems.</p>
+<p>Softwares such as <a href="https://git-scm.com/">git</a> and <a href="https://subversion.apache.org/">subversion</a> can track the evolution of a project, allow the creation of different unrelated versions of it and manage collaborative work on projects without the risk of overwrite each other work.</p>
+<p>Well it&rsquo;s 2021! One would expect version control system for CAD would be as widely used as CAD itself. Actually&hellip; not as one would expect. CAD files have peculiar characteristics which make it hard to deploy version control systems. Beside the fact that it does not exist a universal file format for CAD interchange compatible with various CAD software, keeping track of changes in a 3D geometry is a lot harder than perform the same task in a text file.</p>
+<p>What 2021 has to offer ourselves are <strong>Product Data Management</strong> software. We are talking about special pieces of software designed to be integrated to a specific CAD product (or in some cases multiple ones) in order to perform the complete management of the project of a product at least during its design phase. Specifically, PDM systems keep CAD files organized and version controlled. To be clear, the design phase is only a part of the development and evolution of a product and all there are also special piece of software dedicated to the management of all the lifecycle of a product from its ideation to the utilization and even disposal. Those big boys are <strong>Product Lifecycle Management</strong> and to them PDMs are only a little part of a greater scheme.</p>
+<h2 id="tips-and-tricks-for-file-management">Tips and tricks for file management</h2>
+<p>Let&rsquo;s forget about 1984&rsquo;s <em>grand scheme</em> visions and come back to our poor CAD desig&hellip; I wanted to say Mechanical Design Engineer. PDM software aren&rsquo;t always an option, and some shrewdness and precautions can really make the difference between a messy project and a functional one.</p>
+<ol>
+<li>
+<p>Use non descriptive filenames. People who design components and assembly as a living tend to be used to numbers, to them there is very little distinction between &ldquo;0x1a0x34&rdquo; and &ldquo;left_fixing_bracket&rdquo;, the first one is simply more convenient.</p>
+</li>
+<li>
+<p>Use CAD metadata. Remember that &ldquo;left_fixing_bracket&rdquo; description? Actually it can be useful, but not as a filename exposed to the filesystem, better use it as a property inside the CAD file. CAD allow the definition of a lot of those properties, from the material definition to the manufacturing phases the part has to follow. When changing a part with a modified copy in the context of an assembly it can be useful to keep record of the change by writing the filename of the previous component as a CAD file property.</p>
+</li>
+<li>
+<p>keep track of the changes in a study assembly, be careful not to create too much different iterations thus creating a very big assembly file.</p>
+</li>
+</ol>
+<h2 id="experiments-on-using-git-with-cad-files">Experiments on using git with CAD files</h2>
+<p>Let&rsquo;s go straight to the point: is it possible to use git for tracking CAD repositories? Yes, absolutely. The fact is it&rsquo;s not as convenient as using it with text files. The file difference utility does not return meaningful results and it&rsquo;s always necessary to close CAD files before changing branch to avoid crashing the programs. But, by using the right descriptions in the commit and branching logs is always possible to came back to the state of evolution of a project at any time without relying on a ton of different filenames.</p>
 <p>That&rsquo;s it! I hope this information would be of any interest to anyone facing my same challenge!</p>
 
       </article>
