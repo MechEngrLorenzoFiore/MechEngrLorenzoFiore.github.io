@@ -6,7 +6,25 @@
     <description>Recent content on MechEngrLorenzoFiore</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 27 May 2021 23:25:00 +0200</lastBuildDate><atom:link href="https://MechEngrLorenzoFiore.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 18 Nov 2021 15:02:00 +0200</lastBuildDate><atom:link href="https://MechEngrLorenzoFiore.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GIS Database</title>
+      <link>https://MechEngrLorenzoFiore.github.io/posts/qgis_database_case/</link>
+      <pubDate>Thu, 18 Nov 2021 15:02:00 +0200</pubDate>
+      
+      <guid>https://MechEngrLorenzoFiore.github.io/posts/qgis_database_case/</guid>
+      <description>An example workflow for creating a Database of geografical data</description>
+    </item>
+    
+    <item>
+      <title>Useful websites</title>
+      <link>https://MechEngrLorenzoFiore.github.io/posts/useful_websites/</link>
+      <pubDate>Mon, 23 Aug 2021 00:29:04 +0200</pubDate>
+      
+      <guid>https://MechEngrLorenzoFiore.github.io/posts/useful_websites/</guid>
+      <description>An list of useful websites for engineers</description>
+    </item>
+    
     <item>
       <title>On CAD file management</title>
       <link>https://MechEngrLorenzoFiore.github.io/posts/file_management/</link>

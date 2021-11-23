@@ -4,33 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Automation | MechEngrLorenzoFiore</title>
+    <title>GIS Database | MechEngrLorenzoFiore</title>
 
     
 
 
 
 <meta name="author" content="Lorenzo Fiore" />
-<meta name="description" content="Mechanical Engineer" />
+<meta name="description" content="An example workflow for creating a Database of geografical data" />
 
 
 
 <meta name="generator" content="Hugo 0.82.0" />
 
-<link rel="canonical" href="https://MechEngrLorenzoFiore.github.io/tags/automation/" />
+<link rel="canonical" href="https://MechEngrLorenzoFiore.github.io/posts/qgis_database_case/" />
 
 
-<meta property="og:title" content="Automation" />
-<meta property="og:description" content="Mechanical Engineer" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://MechEngrLorenzoFiore.github.io/tags/automation/" />
+<meta property="og:title" content="GIS Database" />
+<meta property="og:description" content="An example workflow for creating a Database of geografical data" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://MechEngrLorenzoFiore.github.io/posts/qgis_database_case/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-11-18T15:02:00&#43;02:00" />
+<meta property="article:modified_time" content="2021-11-18T15:02:00&#43;02:00" />
 
 
 
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Automation"/>
-<meta name="twitter:description" content="Mechanical Engineer"/>
+<meta name="twitter:title" content="GIS Database"/>
+<meta name="twitter:description" content="An example workflow for creating a Database of geografical data"/>
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
@@ -66,7 +68,13 @@
 </style>
 
 
-     
+    
+
+
+
+
+
+
 
     
   </head>
@@ -94,161 +102,124 @@
         <section class="front">
           <div class="dream-max-width">
             
-
-<header class="ui basic very padded segment dream-header">
+<div class="ui relaxed centered grid dream-grid dream-grid-single">
   
-  <div class="ui small circular image">
-    <img src="/img/avatar_2.jpg" alt="avatar" />
-  </div>
+  
+  
   
 
-  <div class="content">
-    <h1 class="ui medium header">Lorenzo Fiore&#39;s blog<div class="sub header">Leave the world a better place than you find it</div>
-    </h1>
-
-    <article class="ui horizontal list">
-      
-      <a class="item" href="/posts">
-        <i class="archive icon" title="Archives"></i>
-      </a>
-      
-      <a class="item" href="/categories">
-        <i class="th list icon" title="All Categories"></i>
-      </a>
-      <a class="item" href="/tags">
-        <i class="tags icon" title="All Tags"></i>
-      </a>
-    </article>
-
+  
+  <aside class="sixteen wide mobile sixteen wide tablet three wide computer column dream-single-aside">
+  
     
-    
-    
-    
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
+    <div class="ui segment toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#motivation-and-context">Motivation and context</a></li>
+    <li><a href="#challenges-i-faced">Challenges I faced</a>
+      <ul>
+        <li><a href="#brainstorming">Brainstorming</a></li>
+        <li><a href="#research">Research</a></li>
+      </ul>
+    </li>
+    <li><a href="#how-tos">How Tos</a></li>
+    <li><a href="#useful-lessons-i-learned">Useful lessons I learned</a></li>
+  </ul>
+</nav>
+    </div>
     
 
     
+  
+  </aside>
+  
+  <div class="sixteen wide mobile sixteen wide tablet ten wide computer column markdown-body dream-single" id="dream-save-post-as-img">
+    <section class="ui top attached segment">
+      <header>
+        <h1 class="ui large header">GIS Database<div class="sub header">
+            <div class="left">
+              @
+              
+                
+                  Lorenzo Fiore
+                
+              
 
-    
-    
-    
-          <div class="dream-tags">
-          
-          
-          
-            <a class="ui label" href="/tags/3d-modelling/" title="3D modelling">
-              3D modelling
-            </a>
-          
-          
-          
-            <a class="ui label" href="/tags/automation/" title="Automation">
-              Automation
-            </a>
-          
-          
-          
-            <a class="ui label" href="/tags/cad/" title="CAD">
-              CAD
-            </a>
-          
-          
-          
-            <a class="ui label" href="/tags/cartography/" title="Cartography">
-              Cartography
-            </a>
-          
-          
-          
-            <a class="ui label" href="/tags/fem/" title="FEM">
-              FEM
-            </a>
-          
+              | 
+                  
+                    Thursday, Nov 18, 2021
+                  
+                
+
+              | 4 minutes read
+
+              
+            </div>
+
+            
+            <div class="dream-share">
+  <a href="#" class="save-as-image" title="Save as image" onclick="savePostAsImg()">
+    <i class="save icon"></i>
+  </a>
+  </a>
+  <a href="https://www.linkedin.com/in/lorenzo-fiore-372b83194/">
+    <i class="linkedin icon"></i>
+  </a>
+</div>
+
+
+
+
+            
           </div>
+        </h1>
+      </header>
+
+      <article class="main">
+        
+
+        <h2 id="motivation-and-context">Motivation and context</h2>
+<p>I recently had to move. After a year of work in a manufacturing company I have been granted a Marie Curie PhD in structural mechanics and since then my life has fundamentally changed. Before this PhD, I have always studied and worked near the town I was born and never faced any problems finding house and accomodation, while now I have to find an apartment in a different city and I&rsquo;ll have to do the same in 18 months as the PhD includes secondment in a foreign country.</p>
+<h2 id="challenges-i-faced">Challenges I faced</h2>
+<p>I&rsquo;m a very meticulous and organized person and navigating through the maze of websites, agencies and private contacts has been a real nightmare. I needed a way of keeping everything organized and easily find the best solution among those available. My criteria would include geographical position, price of the apartment, size, services and so on and I also wanted a way of keeping track of the appointments with tenants.</p>
+<h3 id="brainstorming">Brainstorming</h3>
+<p>My father is an Agronomist and I have always been exposed to digital topography and maps, that is a field which I have ever been fascinated about even if I chose a different career path. I also have a little background on QGIS, and open source program specifically aimed to topography. I knew that tool was the right one for me. I only had to go thought the hassle of understanding how to add specifical information in a format of my choiche to a point on the map.</p>
+<h3 id="research">Research</h3>
+<p>I started my learning path in QGIS as I would in any other program. By trying every available buttom and function only to miserably fail and go search the proper documentation. There is always that voice in my head that want to ignore the well known <a href="https://www.safalniveshak.com/ignorant-of-our-own-ignorance/">Dunnig-Kruger Effect</a>.</p>
+<p>Anyway I found that the best way of performing the task I had in mind was that of creating a custom shaperfile with proper attributes but before going through the passage I want to discuss the setup so that this article could be really useful to anyone interested.</p>
+<h2 id="how-tos">How Tos</h2>
+<ul>
+<li>
+<p>First install <a href="https://www.qgis.org/en/site/">QGIS</a> . I also suggest installing the Quickmapservices and OSM place search plugins.</p>
+</li>
+<li>
+<p>Once installed the program open a new project and go to Layer &gt; Data souce manager. That&rsquo;s were you need to add the most needed maps to the white screen. Navigate to WMS/WMTS and to new. Here you have to specify were the program has to look on the internet for the maps you need. The Italian government has all the cartography available on the regions websites, you just have to find the link to a WMS service and don&rsquo;t be scared by the nonsense on the screen, you need the link to the page and QGIS would do the rest. Connect to the service and add the Layer.</p>
+</li>
+<li>
+<p>Finally a map where to search! To make the searching less fuzzy use the OSM place search plugin, you could specify global coordinates data easily extractable from google maps of simply a street address.</p>
+</li>
+<li>
+<p>The setup is ready, let&rsquo;s go for the database! First add a shaperfile layer. The popup window requests for a location on the computer were to save the data, the kind of geometrical data (points for locations) and a list of attributes to give to the layer. Here is the moment of personalization. I added some text attributes such as the tenant number the availability, whether it is an apartment or only a room,&hellip; and a very inportant numeric one: the price for the apartment. Don&rsquo;t go superficially on this part, redefining the attributes later is no easy task.</p>
+</li>
+<li>
+<p>Once the layer is set I suggest spending a bit of time playing with the attributes form. You can create a nice form that pops up every time you want to add a new database entry. And that&rsquo;s it! Search on the internet for an interesting place and then go to QGIS, select the Database layer Ctrl+E to enter edit mode, add a point to the desired place, upload the informations on the pop up window and when you want to have a grasp of it all go to the Attribute table (F6) and filter for the best!</p>
+</li>
+<li>
+<p>You can also do other interesting things such as colour differently the points based on the attributes and print out a nice map with different scale and details on a layout but I&rsquo;m sure you can manage it if you followed me up to here.</p>
+</li>
+</ul>
+<h2 id="useful-lessons-i-learned">Useful lessons I learned</h2>
+<p>I know. That is a bit of an overkill for the task. But, as I said, I like to be organized and I also like to learn how to use new tools. Anyway QGIS is a very powerful instrument to handle geographical data, and this is only to rent an apartment! I can&rsquo;t imagine what I&rsquo;ll come up with when and whether I&rsquo;ll buy an house!</p>
+
+      </article>
+    </section>
+
+    
+
     
 
     
   </div>
-</header>
-
-
-<div class="ui relaxed grid dream-grid">
-  
-  
-  <div class="sixteen wide mobile eight wide tablet eight wide computer four wide large screen four wide widescreen column dream-column">
-    <article class="ui attached segment card dream-card">
-  <a class="image" href="https://MechEngrLorenzoFiore.github.io/posts/file_management/">
-    
-    <img src="/img/cad_file_management.png" alt="On CAD file management" />
-    
-  </a>
-
-  <div class="content">
-    <h2 class="ui medium header">
-      <a href="/posts/file_management/">On CAD file management</a>
-    </h2>
-    <div class="meta">
-      <p class="date">
-        Thursday, May 27, 2021
-      </p>
-    </div>
-    <div class="description">
-      Some reflections about file management of CAD files.
-    </div>
-  </div>
-
-  <div class="extra content">
-    <div class="author"><img class="ui avatar image" src="/img/avatar_2.jpg" alt="avatar" />Lorenzo Fiore</div>
-    <div class="reading-time">
-      <i class="clock icon"></i>6 minutes read</div>
-  </div>
-</article>
-
-  </div>
-  
-  <div class="sixteen wide mobile eight wide tablet eight wide computer four wide large screen four wide widescreen column dream-column">
-    <article class="ui attached segment card dream-card">
-  <a class="image" href="https://MechEngrLorenzoFiore.github.io/posts/ansys_automation/">
-    
-    <img src="/img/post_Ansys_Automation/ansys_obj_gen.png" alt="Ansys Automation" />
-    
-  </a>
-
-  <div class="content">
-    <h2 class="ui medium header">
-      <a href="/posts/ansys_automation/">Ansys Automation</a>
-    </h2>
-    <div class="meta">
-      <p class="date">
-        Thursday, Apr 29, 2021
-      </p>
-    </div>
-    <div class="description">
-      An example workflow for automating time consuming tasks in Ansys Mechanical
-    </div>
-  </div>
-
-  <div class="extra content">
-    <div class="author"><img class="ui avatar image" src="/img/avatar_2.jpg" alt="avatar" />Lorenzo Fiore</div>
-    <div class="reading-time">
-      <i class="clock icon"></i>3 minutes read</div>
-  </div>
-</article>
-
-  </div>
-  
-
-  
 </div>
 
 
@@ -434,7 +405,6 @@ Enjoy and let&rsquo;s stay in contact!</p>
 
   
   
-  
 </div>
 
           </div>
@@ -482,9 +452,10 @@ Enjoy and let&rsquo;s stay in contact!</p>
 
 
 
-<script src="/js/imagesloaded.pkgd.min.js"></script>
-<script src="/js/masonry.pkgd.min.js"></script>
-<script src="/js/grid.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js"></script>
+<script src="/js/post.js" defer></script>
 
 
     

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Resources on MechEngrLorenzoFiore</title>
+    <link>https://MechEngrLorenzoFiore.github.io/categories/resources/</link>
+    <description>Recent content in Resources on MechEngrLorenzoFiore</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 23 Aug 2021 00:29:04 +0200</lastBuildDate><atom:link href="https://MechEngrLorenzoFiore.github.io/categories/resources/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Useful websites</title>
+      <link>https://MechEngrLorenzoFiore.github.io/posts/useful_websites/</link>
+      <pubDate>Mon, 23 Aug 2021 00:29:04 +0200</pubDate>
+      
+      <guid>https://MechEngrLorenzoFiore.github.io/posts/useful_websites/</guid>
+      <description>An list of useful websites for engineers</description>
+    </item>
+    
+  </channel>
+</rss>
