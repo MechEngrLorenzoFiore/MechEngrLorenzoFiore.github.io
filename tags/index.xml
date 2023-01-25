@@ -6,13 +6,31 @@
     <description>Recent content in Tags on MechEngrLorenzoFiore</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 18 Nov 2021 15:02:00 +0200</lastBuildDate><atom:link href="https://MechEngrLorenzoFiore.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 20 Nov 2022 11:47:00 +0200</lastBuildDate><atom:link href="https://MechEngrLorenzoFiore.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Cartography</title>
-      <link>https://MechEngrLorenzoFiore.github.io/tags/cartography/</link>
+      <title>Computational</title>
+      <link>https://MechEngrLorenzoFiore.github.io/tags/computational/</link>
+      <pubDate>Sun, 20 Nov 2022 11:47:00 +0200</pubDate>
+      
+      <guid>https://MechEngrLorenzoFiore.github.io/tags/computational/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>FEM</title>
+      <link>https://MechEngrLorenzoFiore.github.io/tags/fem/</link>
+      <pubDate>Sun, 20 Nov 2022 11:47:00 +0200</pubDate>
+      
+      <guid>https://MechEngrLorenzoFiore.github.io/tags/fem/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Digital Images</title>
+      <link>https://MechEngrLorenzoFiore.github.io/tags/digital-images/</link>
       <pubDate>Thu, 18 Nov 2021 15:02:00 +0200</pubDate>
       
-      <guid>https://MechEngrLorenzoFiore.github.io/tags/cartography/</guid>
+      <guid>https://MechEngrLorenzoFiore.github.io/tags/digital-images/</guid>
       <description></description>
     </item>
     
@@ -40,15 +58,6 @@
       <pubDate>Thu, 06 May 2021 01:51:33 +0200</pubDate>
       
       <guid>https://MechEngrLorenzoFiore.github.io/tags/3d-modelling/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>FEM</title>
-      <link>https://MechEngrLorenzoFiore.github.io/tags/fem/</link>
-      <pubDate>Thu, 29 Apr 2021 23:20:04 +0200</pubDate>
-      
-      <guid>https://MechEngrLorenzoFiore.github.io/tags/fem/</guid>
       <description></description>
     </item>
     

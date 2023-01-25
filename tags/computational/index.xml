@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Computational on MechEngrLorenzoFiore</title>
+    <link>https://MechEngrLorenzoFiore.github.io/tags/computational/</link>
+    <description>Recent content in Computational on MechEngrLorenzoFiore</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 20 Nov 2022 11:47:00 +0200</lastBuildDate><atom:link href="https://MechEngrLorenzoFiore.github.io/tags/computational/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Calculix-PrePoMax</title>
+      <link>https://MechEngrLorenzoFiore.github.io/posts/prepomax_01/</link>
+      <pubDate>Sun, 20 Nov 2022 11:47:00 +0200</pubDate>
+      
+      <guid>https://MechEngrLorenzoFiore.github.io/posts/prepomax_01/</guid>
+      <description>The amazing PrePoMax and the doomed material models part 1, part simulation</description>
+    </item>
+    
+    <item>
+      <title>A 300 lines 3D FEM model</title>
+      <link>https://MechEngrLorenzoFiore.github.io/posts/fem1elem/</link>
+      <pubDate>Fri, 18 Nov 2022 01:41:00 +0200</pubDate>
+      
+      <guid>https://MechEngrLorenzoFiore.github.io/posts/fem1elem/</guid>
+      <description>A didactic script in python using JAX to solve the non-linear equilibrium problem</description>
+    </item>
+    
+  </channel>
+</rss>

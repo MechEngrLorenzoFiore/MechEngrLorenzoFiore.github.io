@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>A 300 lines 3D FEM model | MechEngrLorenzoFiore</title>
+
+    
+
+
+
+<meta name="author" content="Lorenzo Fiore" />
+<meta name="description" content="A didactic script in python using JAX to solve the non-linear equilibrium problem" />
+
+
+
+<meta name="generator" content="Hugo 0.82.0" />
+
+<link rel="canonical" href="https://MechEngrLorenzoFiore.github.io/posts/fem1elem/" />
+
+
+<meta property="og:title" content="A 300 lines 3D FEM model" />
+<meta property="og:description" content="A didactic script in python using JAX to solve the non-linear equilibrium problem" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://MechEngrLorenzoFiore.github.io/posts/fem1elem/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-11-18T01:41:00&#43;02:00" />
+<meta property="article:modified_time" content="2022-11-18T01:41:00&#43;02:00" />
+
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="A 300 lines 3D FEM model"/>
+<meta name="twitter:description" content="A didactic script in python using JAX to solve the non-linear equilibrium problem"/>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+<link rel="stylesheet" href="/css/icomoon.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@1.13.1/css/OverlayScrollbars.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css">
+<link rel="stylesheet" href="/css/site.css" />
+
+<style>
+  a:not(.ui.button):hover {
+    text-decoration: underline;
+  }
+
+  
+  a:not(.ui.button) {
+    color: seagreen !important;
+  }
+  
+
+  
+
+  
+  body.default {
+    
+    background-color: #f7f7f7;
+    
+
+    
+  }
+  
+
+  
+</style>
+
+
+    
+
+
+
+
+
+
+
+    
+  </head>
+
+  <body class="default">
+    
+<nav class="ui secondary menu dream-menu">
+
+  <div class="item">
+    <i class="large link bullseye icon dream-flip-toggle" title="Flip it!"></i>
+  </div>
+  <div class="item">
+    <i class="large link home icon" title="Home" onclick="window.location.href = 'https:\/\/MechEngrLorenzoFiore.github.io\/'"></i>
+  </div>
+  
+  
+  <div class="item">
+    <i class="large link search icon" onclick="toggleSearch()"></i>
+  </div>
+  
+</nav>
+
+    <div class="flip-container">
+      <div class="flipper">
+        <section class="front">
+          <div class="dream-max-width">
+            
+<div class="ui relaxed centered grid dream-grid dream-grid-single">
+  
+  
+  
+  
+
+  
+  <aside class="sixteen wide mobile sixteen wide tablet three wide computer column dream-single-aside">
+  
+    
+    <div class="ui segment toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#motivation">Motivation</a></li>
+    <li><a href="#the-theory-of-plasticity">The theory of plasticity</a></li>
+    <li><a href="#the-jax-library">The jax library</a></li>
+    <li><a href="#my-code-in-3-classes">My code in 3 classes</a></li>
+  </ul>
+</nav>
+    </div>
+    
+
+    
+  
+  </aside>
+  
+  <div class="sixteen wide mobile sixteen wide tablet ten wide computer column markdown-body dream-single" id="dream-save-post-as-img">
+    <section class="ui top attached segment">
+      <header>
+        <h1 class="ui large header">A 300 lines 3D FEM model<div class="sub header">
+            <div class="left">
+              @
+              
+                
+                  Lorenzo Fiore
+                
+              
+
+              | 
+                  
+                    Friday, Nov 18, 2022
+                  
+                
+
+              | 4 minutes read
+
+              
+            </div>
+
+            
+            <div class="dream-share">
+  <a href="#" class="save-as-image" title="Save as image" onclick="savePostAsImg()">
+    <i class="save icon"></i>
+  </a>
+  </a>
+  <a href="https://www.linkedin.com/in/lorenzo-fiore-372b83194/">
+    <i class="linkedin icon"></i>
+  </a>
+</div>
+
+
+
+
+            
+          </div>
+        </h1>
+      </header>
+
+      <article class="main">
+        
+
+        <h2 id="motivation">Motivation</h2>
+<p>Following theoretical arguments in formal textbooks is hard. Engineers are practical people and when dealing with a new subject I know that the best way for me to learn is understand enough to be able to try out myself and experiment with the math. And there is no better way to experiment than implement the equations is a simple script and continue elaborate on that script till you realize that it&rsquo;s 5am in the morning and you didn&rsquo;t even had dinner. Bare with me, the code I want to talk about is the product of such a full immersion!</p>
+<h2 id="the-theory-of-plasticity">The theory of plasticity</h2>
+<p>The first time I had to approach a FEM simulation with a plastic material model I was quite startled. I had never done such a thing and had no idea why it took so long for the computer to tell me every setting was wrong and the results were meaningless. And more importantly, how to get this thing converging??? What is to converge exactly???</p>
+<p>Of course I had classes on non-linear equations and the Newton-Raphson method during college, but those thing don&rsquo;t really stick into my mind till I try out myself. And that&rsquo;s how I end up studying &ldquo;Computational Inelasticity&rdquo; (Simo Hughes 1998) and &ldquo;Computational Methods for Plasticity&rdquo; (de Souza Neto Peri Owen 2008). After studing those&hellip; I still had just a vague idea of what was going on, I needed to implement the stuff myself!</p>
+<h2 id="the-jax-library">The jax library</h2>
+<p>There are a lot of derivatives in mathematical models. And even more derivatives in numerical solutions of mathematical models. This is actually a pretty nasty problems for people developing computer programs from general algorithms written in textbooks cause usually the task of actually doing the math is left to the readed&hellip; not ideal. Fortunately, together with global pandemics and climate change the 21st century provided us with automatic differentiation. The power of having derivatives computed by the computer with reasonable accuracy just by asking for it. Even better there is a python library that perform derivatives of python functions, the JAX library, a stunning amazing tool which I made sure to overuse.</p>
+<h2 id="my-code-in-3-classes">My code in 3 classes</h2>
+<p>I settled down one specific goal with this script: set an equilibrium problem with non-linearities in the material model, which has to be a plastic one, and solve this problem on a 3D cubic domain constituted by just one finite elemen, hence the name: FEM1elem.</p>
+<p>For all the derivatives to be computed in the script I used the functionalities of the JAX library, from the computation of the derivatives of the shape function to the computation of the tangent stiffness matrixes for the famous Newton-Raphson method.</p>
+<p>The code is divided in 3 python classes:</p>
+<ul>
+<li>PDE_problem takes as inputs a Material object and a Finite_element object (defined using the classes below) together with mesh, bare conditions, initial conditions and prescribed displacements matrices defined at each node, and an initial state variables matrix with values prescribed at the integration points.
+<ul>
+<li>Method Solutor_NL_statics_displ_control this method elaborates the data structures provided as inputs and sets a Newton-Raphson iteration algorithm to solve the non-linear problem of global equilibrium for a continuum solid. A global residual is calculated leveraging the Material and Finite_element methods and derivatives of this global residual function are calculated with the automatic differentiation method provided by the Jax library upon vectorization of the input objects.</li>
+</ul>
+</li>
+<li>Finite_Element class contains all the methods needed to perform computations with the finite element method and the relative numerical integration procedures with the Gauss method.
+<ul>
+<li>Method shape_function shape function value for a specific node (identified with an identification number) calculated at the position provided in natural coordinates of the element.</li>
+<li>Method coord_trans transformation from natural coordinates to real ones considering the element real coordinates.</li>
+<li>Method Jacobian_matr Jacobian matrix calculated transforming the coord_trans method with the Jax jacfwd method.</li>
+<li>Method B_strain_disp_matr strain-displacement matrix calculated using the inverse of the Jacobian of the coordinate transformation, and the derivative of the shape function (obtained leveraging the Jax automatic differentiation method).</li>
+<li>Method Gauss_integration_int function integration using the Gauss method. The method also contains the function definitions for the internal force vector integrand. The implementation of this method contains some logical switches which are used to speed up the computation avoiding unnecessary calculations in the computations of the global residual and its derivatives.</li>
+</ul>
+</li>
+<li>Material class takes as input the functional definition of an elastic potential, a yield function and an hardening law together with the respective parameters (whose number is variable to account for different formulations).
+<ul>
+<li>Method Voigt_stress calculation of stress increment from the strain increment input. This method contains the return mapping algorithm and the update of the state variables for the material point.</li>
+</ul>
+</li>
+</ul>
+<p>That&rsquo;s it! (Considering the amount of time I spent writing it) I hope that the code could be useful to anyone interested in understanding the FEM method in its inner guts.
+The code is available at my Github toghether with the instructions needed to run it.</p>
+
+      </article>
+    </section>
+
+    
+
+    
+
+    
+  </div>
+</div>
+
+
+            <footer class="ui basic center aligned segment" style="background-color: transparent;">
+              
+              <p>© 2021 - 2023 MechEngrLorenzoFiore</p>
+              
+
+              <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/g1eny0ung/hugo-theme-dream" target="_blank">Dream</a>.</p>
+
+              
+            </footer>
+          </div>
+        </section>
+        <section class="back">
+          <div class="dream-max-width">
+            <header class="ui basic very padded segment dream-header">
+  
+  <div class="ui small circular image">
+    <img src="/img/avatar_2.jpg" alt="avatar" />
+  </div>
+  
+
+  <div class="content">
+    <h1 class="ui medium header">Lorenzo Fiore&#39;s blog<div class="sub header">Leave the world a better place than you find it</div>
+    </h1>
+
+    <article class="ui horizontal list">
+      
+      <a class="item" href="/posts">
+        <i class="archive icon" title="Archives"></i>
+      </a>
+      
+      <a class="item" href="/categories">
+        <i class="th list icon" title="All Categories"></i>
+      </a>
+      <a class="item" href="/tags">
+        <i class="tags icon" title="All Tags"></i>
+      </a>
+    </article>
+
+    
+    
+    
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+    
+
+    
+
+    
+    
+    
+          <div class="dream-tags">
+          
+          
+          
+            <a class="ui label" href="/tags/3d-modelling/" title="3D modelling">
+              3D modelling
+            </a>
+          
+          
+          
+            <a class="ui label" href="/tags/automation/" title="Automation">
+              Automation
+            </a>
+          
+          
+          
+            <a class="ui label" href="/tags/cad/" title="CAD">
+              CAD
+            </a>
+          
+          
+          
+            <a class="ui label" href="/tags/computational/" title="Computational">
+              Computational
+            </a>
+          
+          
+          
+            <a class="ui label" href="/tags/digital-images/" title="Digital Images">
+              Digital Images
+            </a>
+          
+          
+          
+            <a class="ui label" href="/tags/fem/" title="FEM">
+              FEM
+            </a>
+          
+          </div>
+    
+
+    
+  </div>
+</header>
+
+
+<div class="ui relaxed grid dream-grid dream-back">
+  
+  
+  
+  <div class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    <article class="ui segment markdown-body">
+      <div class="ui medium header">Once a Scout, always a Scout!</div>
+      <p>I&rsquo;m a proud member of the World Wide Scout Movement.</p>
+<blockquote>
+<p>Try and leave this world a little better than you found it,
+and when your turn comes to die,
+you can die happy in feeling that at any rate,
+you have not wasted your time but have done your best.</p>
+</blockquote>
+<blockquote>
+<p>Robert Baden-Powell, fouder of the Scout Movement</p>
+</blockquote>
+    </article>
+  </div>
+  
+  <div class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    <article class="ui segment markdown-body">
+      <div class="ui medium header">About me</div>
+      <p>If you came up here you want to know a little bit more about myself.
+That&rsquo;s awesome!</p>
+<p>I&rsquo;m a Mechanical Engineer, a curious person and a maker!
+I don&rsquo;t waste any time trying to learn everything I can about the
+topic I love the most, be it mechanical design, programming,
+old school hand abilities, music, languages, you name it!</p>
+<p>This websites purpose is to share my knowledge and experience hoping
+this would be of any help for anyone facing the challenges I face.
+Enjoy and let&rsquo;s stay in contact!</p>
+    </article>
+  </div>
+  
+
+  <div class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    <article class="ui segment">
+      <div class="ui medium header">Social Links</div>
+      <nav class="ui secondary menu dream-menu dream-socials">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <div class="item">
+    <a href="https://www.linkedin.com/in/lorenzo-fiore-372b83194" target="_blank">
+      <i class="large linkedin icon" title="Linkedin"></i>
+    </a>
+  </div>
+  
+
+  
+  <div class="item">
+    <a href="https://github.com/MechEngrLorenzoFiore" target="_blank">
+      <i class="large github icon" title="GitHub"></i>
+    </a>
+  </div>
+  
+
+  
+
+  
+</nav>
+
+    </article>
+  </div>
+
+  <div class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    
+  </div>
+
+  
+  
+</div>
+
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script>
+  window.defaultDark =  null 
+  window.backgroundDark =  null 
+  window.backgroundImageDark =  null 
+  window.darkNav =  null 
+  window.hasTwitterEmbed =  null 
+  window.maxTags =  null 
+
+  if (window.hasTwitterEmbed) {
+    
+    window.twttr = (function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {}
+      if (d.getElementById(id)) return t
+      js = d.createElement(s)
+      js.id = id
+      js.src = 'https://platform.twitter.com/widgets.js'
+      fjs.parentNode.insertBefore(js, fjs)
+
+      t._e = []
+      t.ready = function (f) {
+        t._e.push(f)
+      }
+
+      return t
+    })(document, 'script', 'twitter-wjs')
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@1.13.1/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/js/header.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/theme.js"></script>
+
+    
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js"></script>
+<script src="/js/post.js" defer></script>
+
+
+    
+    <div class="ui inverted segment" id="dream-search">
+  <div class="ui search">
+    <div class="ui transparent input">
+      <input class="prompt" type="text" placeholder="Search" />
+    </div>
+    <div class="results"></div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    $.getJSON('https:\/\/MechEngrLorenzoFiore.github.io\//index.json', function (data) {
+      $('.ui.search').search({
+        source: data,
+        searchFields: ['title'],
+        showNoResults: true,
+      })
+    })
+  })
+</script>
+<script src="/js/search.js"></script>
+
+    
+
+    
+
+    
+  </body>
+</html>

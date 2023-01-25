@@ -3,28 +3,46 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://MechEngrLorenzoFiore.github.io/categories/cae/</loc>
-    <lastmod>2021-11-18T15:02:00+02:00</lastmod>
+    <lastmod>2022-11-20T11:47:00+02:00</lastmod>
   </url><url>
-    <loc>https://MechEngrLorenzoFiore.github.io/tags/cartography/</loc>
-    <lastmod>2021-11-18T15:02:00+02:00</lastmod>
+    <loc>https://MechEngrLorenzoFiore.github.io/posts/prepomax_01/</loc>
+    <lastmod>2022-11-20T11:47:00+02:00</lastmod>
   </url><url>
     <loc>https://MechEngrLorenzoFiore.github.io/categories/</loc>
+    <lastmod>2022-11-20T11:47:00+02:00</lastmod>
+  </url><url>
+    <loc>https://MechEngrLorenzoFiore.github.io/tags/computational/</loc>
+    <lastmod>2022-11-20T11:47:00+02:00</lastmod>
+  </url><url>
+    <loc>https://MechEngrLorenzoFiore.github.io/tags/fem/</loc>
+    <lastmod>2022-11-20T11:47:00+02:00</lastmod>
+  </url><url>
+    <loc>https://MechEngrLorenzoFiore.github.io/</loc>
+    <lastmod>2022-11-20T11:47:00+02:00</lastmod>
+  </url><url>
+    <loc>https://MechEngrLorenzoFiore.github.io/posts/</loc>
+    <lastmod>2022-11-20T11:47:00+02:00</lastmod>
+  </url><url>
+    <loc>https://MechEngrLorenzoFiore.github.io/tags/</loc>
+    <lastmod>2022-11-20T11:47:00+02:00</lastmod>
+  </url><url>
+    <loc>https://MechEngrLorenzoFiore.github.io/posts/fem1elem/</loc>
+    <lastmod>2022-11-18T01:41:00+02:00</lastmod>
+  </url><url>
+    <loc>https://MechEngrLorenzoFiore.github.io/categories/fem/</loc>
+    <lastmod>2022-11-18T01:41:00+02:00</lastmod>
+  </url><url>
+    <loc>https://MechEngrLorenzoFiore.github.io/posts/ilbaldassini/</loc>
+    <lastmod>2022-11-18T01:33:00+02:00</lastmod>
+  </url><url>
+    <loc>https://MechEngrLorenzoFiore.github.io/categories/resources/</loc>
+    <lastmod>2022-11-18T01:33:00+02:00</lastmod>
+  </url><url>
+    <loc>https://MechEngrLorenzoFiore.github.io/tags/digital-images/</loc>
     <lastmod>2021-11-18T15:02:00+02:00</lastmod>
   </url><url>
     <loc>https://MechEngrLorenzoFiore.github.io/posts/qgis_database_case/</loc>
     <lastmod>2021-11-18T15:02:00+02:00</lastmod>
-  </url><url>
-    <loc>https://MechEngrLorenzoFiore.github.io/</loc>
-    <lastmod>2021-11-18T15:02:00+02:00</lastmod>
-  </url><url>
-    <loc>https://MechEngrLorenzoFiore.github.io/posts/</loc>
-    <lastmod>2021-11-18T15:02:00+02:00</lastmod>
-  </url><url>
-    <loc>https://MechEngrLorenzoFiore.github.io/tags/</loc>
-    <lastmod>2021-11-18T15:02:00+02:00</lastmod>
-  </url><url>
-    <loc>https://MechEngrLorenzoFiore.github.io/categories/resources/</loc>
-    <lastmod>2021-08-23T00:29:04+02:00</lastmod>
   </url><url>
     <loc>https://MechEngrLorenzoFiore.github.io/posts/useful_websites/</loc>
     <lastmod>2021-08-23T00:29:04+02:00</lastmod>
@@ -45,9 +63,6 @@
     <lastmod>2021-05-06T01:51:33+02:00</lastmod>
   </url><url>
     <loc>https://MechEngrLorenzoFiore.github.io/posts/ansys_automation/</loc>
-    <lastmod>2021-04-29T23:20:04+02:00</lastmod>
-  </url><url>
-    <loc>https://MechEngrLorenzoFiore.github.io/tags/fem/</loc>
     <lastmod>2021-04-29T23:20:04+02:00</lastmod>
   </url>
 </urlset>
