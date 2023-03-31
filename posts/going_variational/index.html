@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Going Variational | MechEngrLorenzoFiore</title>
+
+    
+
+
+
+<meta name="author" content="Lorenzo Fiore" />
+<meta name="description" content="Going Variational Motivation and context How to solve PDEs with modern tools
+Challenges I faced  There are tons of good resources about the FEM, its theory and practical applications and the material is indeed overwhelming. Here some books that built my path towards a medium understanding of what I&amp;rsquo;m doing:  Zienkiewicz and Taylor 2006 - The Finite Element Method for Solid and Structural Mechanics. Lanczos 1949 - The Variational Principles of Mechanics." />
+
+
+
+<meta name="generator" content="Hugo 0.82.0" />
+
+<link rel="canonical" href="https://MechEngrLorenzoFiore.github.io/posts/going_variational/" />
+
+
+<meta property="og:title" content="Going Variational" />
+<meta property="og:description" content="Going Variational Motivation and context How to solve PDEs with modern tools
+Challenges I faced  There are tons of good resources about the FEM, its theory and practical applications and the material is indeed overwhelming. Here some books that built my path towards a medium understanding of what I&rsquo;m doing:  Zienkiewicz and Taylor 2006 - The Finite Element Method for Solid and Structural Mechanics. Lanczos 1949 - The Variational Principles of Mechanics." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://MechEngrLorenzoFiore.github.io/posts/going_variational/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-03-08T10:03:56&#43;00:00" />
+<meta property="article:modified_time" content="2023-03-08T10:03:56&#43;00:00" />
+
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Going Variational"/>
+<meta name="twitter:description" content="Going Variational Motivation and context How to solve PDEs with modern tools
+Challenges I faced  There are tons of good resources about the FEM, its theory and practical applications and the material is indeed overwhelming. Here some books that built my path towards a medium understanding of what I&rsquo;m doing:  Zienkiewicz and Taylor 2006 - The Finite Element Method for Solid and Structural Mechanics. Lanczos 1949 - The Variational Principles of Mechanics."/>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+<link rel="stylesheet" href="/css/icomoon.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@1.13.1/css/OverlayScrollbars.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css">
+<link rel="stylesheet" href="/css/site.css" />
+
+<style>
+  a:not(.ui.button):hover {
+    text-decoration: underline;
+  }
+
+  
+  a:not(.ui.button) {
+    color: seagreen !important;
+  }
+  
+
+  
+
+  
+  body.default {
+    
+    background-color: #f7f7f7;
+    
+
+    
+  }
+  
+
+  
+</style>
+
+
+    
+
+
+
+
+
+
+
+    
+  </head>
+
+  <body class="default">
+    
+<nav class="ui secondary menu dream-menu">
+
+  <div class="item">
+    <i class="large link bullseye icon dream-flip-toggle" title="Flip it!"></i>
+  </div>
+  <div class="item">
+    <i class="large link home icon" title="Home" onclick="window.location.href = 'https:\/\/MechEngrLorenzoFiore.github.io\/'"></i>
+  </div>
+  
+  
+  <div class="item">
+    <i class="large link search icon" onclick="toggleSearch()"></i>
+  </div>
+  
+</nav>
+
+    <div class="flip-container">
+      <div class="flipper">
+        <section class="front">
+          <div class="dream-max-width">
+            
+<div class="ui relaxed centered grid dream-grid dream-grid-single">
+  
+  
+  
+  
+
+  
+  <aside class="sixteen wide mobile sixteen wide tablet three wide computer column dream-single-aside">
+  
+    
+    <div class="ui segment toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#motivation-and-context">Motivation and context</a></li>
+    <li><a href="#challenges-i-faced">Challenges I faced</a>
+      <ul>
+        <li><a href="#structural-analogy">Structural analogy</a></li>
+        <li><a href="#starting-from-a-strong-differential-form">Starting from a strong differential form</a></li>
+        <li><a href="#starting-from-a-weak-integral-form">Starting from a weak integral form</a></li>
+      </ul>
+    </li>
+    <li><a href="#useful-lessons-i-learned">Useful lessons I learned</a></li>
+  </ul>
+</nav>
+    </div>
+    
+
+    
+  
+  </aside>
+  
+  <div class="sixteen wide mobile sixteen wide tablet ten wide computer column markdown-body dream-single" id="dream-save-post-as-img">
+    <section class="ui top attached segment">
+      <header>
+        <h1 class="ui large header">Going Variational<div class="sub header">
+            <div class="left">
+              @
+              
+                
+                  Lorenzo Fiore
+                
+              
+
+              | 
+                  
+                    Wednesday, Mar 8, 2023
+                  
+                
+
+              | 8 minutes read
+
+              
+            </div>
+
+            
+            <div class="dream-share">
+  <a href="#" class="save-as-image" title="Save as image" onclick="savePostAsImg()">
+    <i class="save icon"></i>
+  </a>
+  </a>
+  <a href="https://www.linkedin.com/in/lorenzo-fiore-372b83194/">
+    <i class="linkedin icon"></i>
+  </a>
+</div>
+
+
+
+
+            
+          </div>
+        </h1>
+      </header>
+
+      <article class="main">
+        
+
+        <h1 id="going-variational">Going Variational</h1>
+<h2 id="motivation-and-context">Motivation and context</h2>
+<p>How to solve PDEs with modern tools</p>
+<h2 id="challenges-i-faced">Challenges I faced</h2>
+<ul>
+<li>There are tons of good resources about the FEM, its theory and practical applications and the material is indeed overwhelming. Here some books that built my path towards a medium understanding of what I&rsquo;m doing:
+<ul>
+<li>Zienkiewicz and Taylor 2006 - The Finite Element Method for Solid and Structural Mechanics.</li>
+<li>Lanczos 1949 - The Variational Principles of Mechanics.</li>
+<li>Madier 2020 - Practical Finite Element Analysis for Mechanical Engineers.</li>
+</ul>
+</li>
+</ul>
+<h3 id="structural-analogy">Structural analogy</h3>
+<ul>
+<li>As many other complex tools, the FEM method was not invented by mathematicians. Mathematicians made a strong tool out of an original idea developed in the last century by structural engineers.</li>
+<li>I&rsquo;m convinced this happens because need is the mother of invention and structural engineers of the past century really started to need to predict how their structure behaved before they build and test them as those structures became more and more complex and the testing conditions more and more dangerous.</li>
+<li>This is why usually in formal textbooks the FEM is introduced with a structural analogy: take a complex structure, divide it in multiple sub-elements each with its stiffness and its bounding points to track the displacement of and solve a complex problem by expressing it in matrix form. Done. Nice.</li>
+<li>While this explanation is actually legit it has its limitations as one tries to better understand what is going on under the hood of a FEM software or, as in my case, while developing a new formulation for a mechanical problem involving modification to the problem PDEs.</li>
+<li>In these cases mathematicians really shine for their competences as the tool they created from the engineers ideas is robust, flexible and fool-proof.
+<ul>
+<li>As <a href="https://www.youtube.com/watch?v=jMvEOmpy8Kw">said</a> by <a href="https://www.youtube.com/@ChrisStaecker">Chris Staecker</a>, a very undervalued youtuber, Math is the process of taking an idea and polishing it so good that it becomes to shine like a star</li>
+</ul>
+</li>
+<li>Variational formulation of a PDE problem can be leveraged to solve any kind of problem, even in cases in which the structural analogy lacks its meaning.</li>
+</ul>
+<h3 id="starting-from-a-strong-differential-form">Starting from a strong differential form</h3>
+<ul>
+<li>Take a PDE problem in its differential form</li>
+<li>Multiply by a function v (called a test function)
+<ul>
+<li>This function has to have certain characteristics, mathematicians would say it has to be an Hilber function
+<ul>
+<li>As far as I understand it has to be bounded, which means that the value of the integral of the function squared (and for some reasons also of the modulus of the gradient of the function squared) has to be less than infinite</li>
+</ul>
+</li>
+<li>Note that this clarification is crucial, if the test function is taken in the wrong space the solution is meaningless. Take the spaces of all functions equal to zero and you will get that anything can be the solution to the PDE problem.</li>
+<li>Also note that this step is the equivalent in function vector spaces of a projection of the problem on the space of test functions</li>
+</ul>
+</li>
+<li>Use integration by parts in order to take out some complexity
+<ul>
+<li>Integration by parts is extremely useful cause it allow to express an integral over a domain as the sum of two terms, one in which a derivative is present (usually that weakens the problem a bit), the other in which the integral is taken over the boundary of the domain instead of the domain itself. This is usually an advantage as problems of this kind come with specifications to what happens to the function at the boundary</li>
+</ul>
+</li>
+<li>Now express the solution function, also referred to as trial function, and the test function as linear combination of basis functions
+<ul>
+<li>The concept of a basis function is somehow intimidating, but it is actually just a way to express a function in an approximated form. In this case the approximation leverages the concept of a vector space.
+<ul>
+<li>Everything is much simpler if you think of it the same way you think of a generic vector in its vector space projected to the axes of the space. The basis function are the axes of a space of functions, it basis indeed.</li>
+</ul>
+</li>
+<li>The choice of the expression of a basis function is a tricky point. Take a mechanical problem for example. The unknown is usually a displacement, its derivative is a strain which can be directly proportional to a stress. If the basis function is linear the corresponding derivative and thus stress and strain, will be continuous in the element and consequently discontinuous between elements. This is why it is usually a bad choice to use linear triangular elements for mechanical problems (this and other tricky stuff such as uncompressibility&hellip;)</li>
+<li>Note that the projection over the space of trial functions and the use of a finite dimensional vector spaces to represent the trial and test functions is crucial to obtain a suitable form in linear algebra matrix vector terms.</li>
+</ul>
+</li>
+<li>The use of two sets of functions and of their representation using basis functions naturally brings to the expression of the problem in linear algebra matrix form. Now the unknowns are the coefficients of the linear combination  representing the trial function</li>
+<li>Note that the computation of the matrix components requires the integration of the basis functions, here things start to become really tricky.
+<ul>
+<li>The basis functions are usually polynomials so it is possible to compute the integral using a quadrature formula, usually Gauss quadrature formula. This actually breaks the variational theory and the proof of existence of a solution that mathematicians developed.
+<ul>
+<li>This is known as a variational crime (no joking here, <a href="https://math.mit.edu/~gs/books/fem_toc.html">Gilber Strang</a> coined the term) but integrals have to be computed and a little breaking the rules causes no harm&hellip; if you are aware of what you are doing!</li>
+<li>Poor choice of basis functions and quadrature formulas can lead to problems with the rank of the solution matrix!</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="starting-from-a-weak-integral-form">Starting from a weak integral form</h3>
+<ul>
+<li>Think of the integral form of the problem as an energy quantity, this is usually how the integral form itself has been written down.
+<ul>
+<li>Most of the times the physical principle underneath an equation is integral itself, the differential form is just an extrapolation which is used to bring some insights in the problem not really visible in the potential form</li>
+</ul>
+</li>
+<li>The solution of the underneath PDE problem is usually an equilibrium state which corresponds to the condition of minimum of the energy integral</li>
+<li>As in any other minimization problem just take the first derivative and set it equal to zero
+<ul>
+<li>In taking the derivative consider using the chain rule to take into account all the possible unknowns of the problem</li>
+<li>This derivative I&rsquo;m talking about is sometimes referred to as a variation and expressed with a different symbol then the usual derivative
+<ul>
+<li>it can indeed be considered as a small variation of the unknown, remember from calculus that in the small neighborhood of a maximum or minimum the tangent is actually with a zero slope, zero increment of energy for small variation</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Careful: in this form the differentials of the unknowns are basically the test functions while the unknowns themselves in the formulation are the trial functions
+<ul>
+<li>Indeed in the literature it is possible to find derivations of weak forms from strong ones in which the test functions symbol is that of a variational differential</li>
+</ul>
+</li>
+<li>Just to conclude, a quick but insightful remark on terminology
+<ul>
+<li>From a mathematical point of view the first derivative of the energy integral is more correctly called first variation. This because this operation is framed in the variational theory which assures consistence and meaning from strong math grounds.
+<ul>
+<li>Given a functional operating on functions and returning scalar values, consider as input to the functional a linear combination of a test function and a trial function where the coefficients of the linear combination are one for the trial and a small parameter for the test.</li>
+<li>The first variation of the functional is the value calculated for the limit of the small t parameter to 0.</li>
+</ul>
+</li>
+<li>Trying to give an intuitive interpretation to this operation consider the functional as an energy quantity, as usual in the applications, and suppose we&rsquo;re looking for a function u which minimizes this functional expression, this is the case in a lot of engineering problems.
+<ul>
+<li>How to find the u that minimizes the functional? Try with a generic u, let&rsquo;s call it a trial function, and poke around in a small surrounding of u to see if u satisfies the condition we pose in the minimization problem.
+<ul>
+<li>This poking could be i.e. sum to the trial another generic function v, let&rsquo;s call it test, of small value&hellip; or better let the value be generic and let&rsquo;s multiply it for a small parameter t, then for the limit of the small parameter t to 0 if the trial u is still minimizing the potential functional then it is actually a solution to our problem!</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>To summarize we took a potential functional, considered a possible solution to the problem of minimizing this functional with a trial function and checked if the trial is actually a solution to the minimization problem using a test function.
+<ul>
+<li>This seems like a good justification for the terminology used in variational formulations and the Finite Element Method approach and an easy way to understand and fix these concepts</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="useful-lessons-i-learned">Useful lessons I learned</h2>
+<ul>
+<li>The concepts described above are important in order to understand the whole picture of the variational approach but in the FEM practice, writing a solver from scratch, the attention is driven by other aspects of the approach and other details difficult to catch but with the potential of breaking the whole process.</li>
+<li>This is why I decided to try to write my own solver <a href="https://mechengrlorenzofiore.github.io/posts/fem1elem/">FEM1elem</a> and get a better understanding not only of the overlying principles but also of all the implementation details</li>
+<li>That&rsquo;s it! I hope this information would turn out useful to anyone</li>
+</ul>
+
+      </article>
+    </section>
+
+    
+
+    
+
+    
+  </div>
+</div>
+
+
+            <footer class="ui basic center aligned segment" style="background-color: transparent;">
+              
+              <p>© 2021 - 2023 MechEngrLorenzoFiore</p>
+              
+
+              <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/g1eny0ung/hugo-theme-dream" target="_blank">Dream</a>.</p>
+
+              
+            </footer>
+          </div>
+        </section>
+        <section class="back">
+          <div class="dream-max-width">
+            <header class="ui basic very padded segment dream-header">
+  
+  <div class="ui small circular image">
+    <img src="/img/avatar_2.jpg" alt="avatar" />
+  </div>
+  
+
+  <div class="content">
+    <h1 class="ui medium header">Lorenzo Fiore&#39;s blog<div class="sub header">Leave the world a better place than you find it</div>
+    </h1>
+
+    <article class="ui horizontal list">
+      
+      <a class="item" href="/posts">
+        <i class="archive icon" title="Archives"></i>
+      </a>
+      
+      <a class="item" href="/categories">
+        <i class="th list icon" title="All Categories"></i>
+      </a>
+      <a class="item" href="/tags">
+        <i class="tags icon" title="All Tags"></i>
+      </a>
+    </article>
+
+    
+    
+    
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+    
+
+    
+
+    
+    
+    
+          <div class="dream-tags">
+          
+          
+          
+            <a class="ui label" href="/tags/3d-modelling/" title="3D modelling">
+              3D modelling
+            </a>
+          
+          
+          
+            <a class="ui label" href="/tags/automation/" title="Automation">
+              Automation
+            </a>
+          
+          
+          
+            <a class="ui label" href="/tags/cad/" title="CAD">
+              CAD
+            </a>
+          
+          
+          
+            <a class="ui label" href="/tags/computational/" title="Computational">
+              Computational
+            </a>
+          
+          
+          
+            <a class="ui label" href="/tags/digital-images/" title="Digital Images">
+              Digital Images
+            </a>
+          
+          
+          
+            <a class="ui label" href="/tags/fem/" title="FEM">
+              FEM
+            </a>
+          
+          </div>
+    
+
+    
+  </div>
+</header>
+
+
+<div class="ui relaxed grid dream-grid dream-back">
+  
+  
+  
+  <div class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    <article class="ui segment markdown-body">
+      <div class="ui medium header">Once a Scout, always a Scout!</div>
+      <p>I&rsquo;m a proud member of the World Wide Scout Movement.</p>
+<blockquote>
+<p>Try and leave this world a little better than you found it,
+and when your turn comes to die,
+you can die happy in feeling that at any rate,
+you have not wasted your time but have done your best.</p>
+</blockquote>
+<blockquote>
+<p>Robert Baden-Powell, fouder of the Scout Movement</p>
+</blockquote>
+    </article>
+  </div>
+  
+  <div class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    <article class="ui segment markdown-body">
+      <div class="ui medium header">About me</div>
+      <p>If you came up here you want to know a little bit more about myself.
+That&rsquo;s awesome!</p>
+<p>I&rsquo;m a Mechanical Engineer, a curious person and a maker!
+I don&rsquo;t waste any time trying to learn everything I can about the
+topic I love the most, be it mechanical design, programming,
+old school hand abilities, music, languages, you name it!</p>
+<p>This websites purpose is to share my knowledge and experience hoping
+this would be of any help for anyone facing the challenges I face.
+Enjoy and let&rsquo;s stay in contact!</p>
+    </article>
+  </div>
+  
+
+  <div class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    <article class="ui segment">
+      <div class="ui medium header">Social Links</div>
+      <nav class="ui secondary menu dream-menu dream-socials">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <div class="item">
+    <a href="https://www.linkedin.com/in/lorenzo-fiore-372b83194" target="_blank">
+      <i class="large linkedin icon" title="Linkedin"></i>
+    </a>
+  </div>
+  
+
+  
+  <div class="item">
+    <a href="https://github.com/MechEngrLorenzoFiore" target="_blank">
+      <i class="large github icon" title="GitHub"></i>
+    </a>
+  </div>
+  
+
+  
+
+  
+</nav>
+
+    </article>
+  </div>
+
+  <div class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    
+  </div>
+
+  
+  
+</div>
+
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script>
+  window.defaultDark =  null 
+  window.backgroundDark =  null 
+  window.backgroundImageDark =  null 
+  window.darkNav =  null 
+  window.hasTwitterEmbed =  null 
+  window.maxTags =  null 
+
+  if (window.hasTwitterEmbed) {
+    
+    window.twttr = (function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {}
+      if (d.getElementById(id)) return t
+      js = d.createElement(s)
+      js.id = id
+      js.src = 'https://platform.twitter.com/widgets.js'
+      fjs.parentNode.insertBefore(js, fjs)
+
+      t._e = []
+      t.ready = function (f) {
+        t._e.push(f)
+      }
+
+      return t
+    })(document, 'script', 'twitter-wjs')
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@1.13.1/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/js/header.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/theme.js"></script>
+
+    
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js"></script>
+<script src="/js/post.js" defer></script>
+
+
+    
+    <div class="ui inverted segment" id="dream-search">
+  <div class="ui search">
+    <div class="ui transparent input">
+      <input class="prompt" type="text" placeholder="Search" />
+    </div>
+    <div class="results"></div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    $.getJSON('https:\/\/MechEngrLorenzoFiore.github.io\//index.json', function (data) {
+      $('.ui.search').search({
+        source: data,
+        searchFields: ['title'],
+        showNoResults: true,
+      })
+    })
+  })
+</script>
+<script src="/js/search.js"></script>
+
+    
+
+    
+
+    
+  </body>
+</html>
