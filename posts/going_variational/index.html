@@ -200,11 +200,8 @@ Challenges I faced  There are tons of good resources about the FEM, its theory a
 <li>I&rsquo;m convinced this happens because need is the mother of invention and structural engineers of the past century really started to need to predict how their structure behaved before they build and test them as those structures became more and more complex and the testing conditions more and more dangerous.</li>
 <li>This is why usually in formal textbooks the FEM is introduced with a structural analogy: take a complex structure, divide it in multiple sub-elements each with its stiffness and its bounding points to track the displacement of and solve a complex problem by expressing it in matrix form. Done. Nice.</li>
 <li>While this explanation is actually legit it has its limitations as one tries to better understand what is going on under the hood of a FEM software or, as in my case, while developing a new formulation for a mechanical problem involving modification to the problem PDEs.</li>
-<li>In these cases mathematicians really shine for their competences as the tool they created from the engineers ideas is robust, flexible and fool-proof.
-<ul>
-<li>As <a href="https://www.youtube.com/watch?v=jMvEOmpy8Kw">said</a> by <a href="https://www.youtube.com/@ChrisStaecker">Chris Staecker</a>, a very undervalued youtuber, Math is the process of taking an idea and polishing it so good that it becomes to shine like a star</li>
-</ul>
-</li>
+<li>In these cases mathematicians really shine for their competences as the tool they created from the engineers ideas is robust, flexible and fool-proof.</li>
+<li>As <a href="https://www.youtube.com/watch?v=jMvEOmpy8Kw">said</a> by <a href="https://www.youtube.com/@ChrisStaecker">Chris Staecker</a>, a very undervalued youtuber, Math is the process of taking an idea and polishing it so good that it becomes to shine like a star.</li>
 <li>Variational formulation of a PDE problem can be leveraged to solve any kind of problem, even in cases in which the structural analogy lacks its meaning.</li>
 </ul>
 <h3 id="starting-from-a-strong-differential-form">Starting from a strong differential form</h3>
@@ -226,18 +223,18 @@ Challenges I faced  There are tons of good resources about the FEM, its theory a
 <li>Integration by parts is extremely useful cause it allow to express an integral over a domain as the sum of two terms, one in which a derivative is present (usually that weakens the problem a bit), the other in which the integral is taken over the boundary of the domain instead of the domain itself. This is usually an advantage as problems of this kind come with specifications to what happens to the function at the boundary</li>
 </ul>
 </li>
-<li>Now express the solution function, also referred to as trial function, and the test function as linear combination of basis functions
+<li>Now express the solution function, also referred to as trial function, and the test function as linear combination of basis functions.
 <ul>
 <li>The concept of a basis function is somehow intimidating, but it is actually just a way to express a function in an approximated form. In this case the approximation leverages the concept of a vector space.
 <ul>
 <li>Everything is much simpler if you think of it the same way you think of a generic vector in its vector space projected to the axes of the space. The basis function are the axes of a space of functions, it basis indeed.</li>
 </ul>
 </li>
-<li>The choice of the expression of a basis function is a tricky point. Take a mechanical problem for example. The unknown is usually a displacement, its derivative is a strain which can be directly proportional to a stress. If the basis function is linear the corresponding derivative and thus stress and strain, will be continuous in the element and consequently discontinuous between elements. This is why it is usually a bad choice to use linear triangular elements for mechanical problems (this and other tricky stuff such as uncompressibility&hellip;)</li>
+<li>The choice of the expression of a basis function is a tricky point. Take a mechanical problem for example. The unknown is usually a displacement, its derivative is a strain which can be directly proportional to a stress. If the basis function is linear the corresponding derivative and thus stress and strain, will be continuous in the element and consequently discontinuous between elements. This is why it is usually a bad choice to use linear triangular elements for mechanical problems (this and other tricky stuff such as uncompressibility).</li>
 <li>Note that the projection over the space of trial functions and the use of a finite dimensional vector spaces to represent the trial and test functions is crucial to obtain a suitable form in linear algebra matrix vector terms.</li>
 </ul>
 </li>
-<li>The use of two sets of functions and of their representation using basis functions naturally brings to the expression of the problem in linear algebra matrix form. Now the unknowns are the coefficients of the linear combination  representing the trial function</li>
+<li>The use of two sets of functions and of their representation using basis functions naturally brings to the expression of the problem in linear algebra matrix form. Now the unknowns are the coefficients of the linear combination  representing the trial function.</li>
 <li>Note that the computation of the matrix components requires the integration of the basis functions, here things start to become really tricky.
 <ul>
 <li>The basis functions are usually polynomials so it is possible to compute the integral using a quadrature formula, usually Gauss quadrature formula. This actually breaks the variational theory and the proof of existence of a solution that mathematicians developed.
@@ -253,26 +250,22 @@ Challenges I faced  There are tons of good resources about the FEM, its theory a
 <ul>
 <li>Think of the integral form of the problem as an energy quantity, this is usually how the integral form itself has been written down.
 <ul>
-<li>Most of the times the physical principle underneath an equation is integral itself, the differential form is just an extrapolation which is used to bring some insights in the problem not really visible in the potential form</li>
+<li>Most of the times the physical principle underneath an equation is integral itself, the differential form is just an extrapolation which is used to bring some insights in the problem not really visible in the potential form.</li>
 </ul>
 </li>
 <li>The solution of the underneath PDE problem is usually an equilibrium state which corresponds to the condition of minimum of the energy integral</li>
-<li>As in any other minimization problem just take the first derivative and set it equal to zero
+<li>As in any other minimization problem just take the first derivative and set it equal to zero.
 <ul>
-<li>In taking the derivative consider using the chain rule to take into account all the possible unknowns of the problem</li>
-<li>This derivative I&rsquo;m talking about is sometimes referred to as a variation and expressed with a different symbol then the usual derivative
-<ul>
-<li>it can indeed be considered as a small variation of the unknown, remember from calculus that in the small neighborhood of a maximum or minimum the tangent is actually with a zero slope, zero increment of energy for small variation</li>
+<li>In taking the derivative consider using the chain rule to take into account all the possible unknowns of the problem.</li>
+<li>This derivative I&rsquo;m talking about is sometimes referred to as a variation and expressed with a different symbol then the usual derivative, it can indeed be considered as a small variation of the unknown, remember from calculus that in the small neighborhood of a maximum or minimum the tangent is actually with a zero slope, zero increment of energy for small variation.</li>
 </ul>
 </li>
-</ul>
-</li>
-<li>Careful: in this form the differentials of the unknowns are basically the test functions while the unknowns themselves in the formulation are the trial functions
+<li>Careful: in this form the differentials of the unknowns are basically the test functions while the unknowns themselves in the formulation are the trial functions.
 <ul>
-<li>Indeed in the literature it is possible to find derivations of weak forms from strong ones in which the test functions symbol is that of a variational differential</li>
+<li>Indeed in the literature it is possible to find derivations of weak forms from strong ones in which the test functions symbol is that of a variational differential.</li>
 </ul>
 </li>
-<li>Just to conclude, a quick but insightful remark on terminology
+<li>Just to conclude, a quick but insightful remark on terminology.
 <ul>
 <li>From a mathematical point of view the first derivative of the energy integral is more correctly called first variation. This because this operation is framed in the variational theory which assures consistence and meaning from strong math grounds.
 <ul>
@@ -291,7 +284,7 @@ Challenges I faced  There are tons of good resources about the FEM, its theory a
 </li>
 <li>To summarize we took a potential functional, considered a possible solution to the problem of minimizing this functional with a trial function and checked if the trial is actually a solution to the minimization problem using a test function.
 <ul>
-<li>This seems like a good justification for the terminology used in variational formulations and the Finite Element Method approach and an easy way to understand and fix these concepts</li>
+<li>This seems like a good justification for the terminology used in variational formulations and the Finite Element Method approach and an easy way to understand and fix these concepts.</li>
 </ul>
 </li>
 </ul>
@@ -300,8 +293,8 @@ Challenges I faced  There are tons of good resources about the FEM, its theory a
 <h2 id="useful-lessons-i-learned">Useful lessons I learned</h2>
 <ul>
 <li>The concepts described above are important in order to understand the whole picture of the variational approach but in the FEM practice, writing a solver from scratch, the attention is driven by other aspects of the approach and other details difficult to catch but with the potential of breaking the whole process.</li>
-<li>This is why I decided to try to write my own solver <a href="https://mechengrlorenzofiore.github.io/posts/fem1elem/">FEM1elem</a> and get a better understanding not only of the overlying principles but also of all the implementation details</li>
-<li>That&rsquo;s it! I hope this information would turn out useful to anyone</li>
+<li>This is why I decided to try to write my own solver [[FEM1elem]] and get a better understanding not only of the overlying principles but also of all the implementation details.</li>
+<li>That&rsquo;s it! I hope this information would turn out useful to anyone.</li>
 </ul>
 
       </article>
@@ -318,7 +311,7 @@ Challenges I faced  There are tons of good resources about the FEM, its theory a
 
             <footer class="ui basic center aligned segment" style="background-color: transparent;">
               
-              <p>© 2021 - 2023 MechEngrLorenzoFiore</p>
+              <p>© 2021 - 2024 MechEngrLorenzoFiore</p>
               
 
               <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/g1eny0ung/hugo-theme-dream" target="_blank">Dream</a>.</p>
