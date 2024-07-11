@@ -6,7 +6,16 @@
     <description>Recent content in CAE on MechEngrLorenzoFiore</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 20 Nov 2022 11:47:00 +0200</lastBuildDate><atom:link href="https://MechEngrLorenzoFiore.github.io/categories/cae/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 06 Mar 2023 11:03:50 +0000</lastBuildDate><atom:link href="https://MechEngrLorenzoFiore.github.io/categories/cae/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Import a mesh in FEniCS</title>
+      <link>https://MechEngrLorenzoFiore.github.io/posts/import_a_mesh_in_fenics/</link>
+      <pubDate>Mon, 06 Mar 2023 11:03:50 +0000</pubDate>
+      
+      <guid>https://MechEngrLorenzoFiore.github.io/posts/import_a_mesh_in_fenics/</guid>
+      <description>Import a mesh in FEniCS Motivation and context  When I first approached the software library FEniCS I was overwhelmed by the possibilities. This collection of software allows the user to define whatever Partial Differential Equation on a geometrical domain and automate all the process from the definition of finite elements to solution of the equation, it&amp;rsquo;s simply brilliant! Wanna solve a thermal diffusion problem? Just type the heat equation in integral form:  ET = ( rho*cspec*(T_trl-T_old)/dt*T_tst + \ + Kcond*fe.</description>
+    </item>
+    
     <item>
       <title>Calculix-PrePoMax</title>
       <link>https://MechEngrLorenzoFiore.github.io/posts/prepomax_01/</link>

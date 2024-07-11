@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Recursivity and permutations | MechEngrLorenzoFiore</title>
+
+    
+
+
+
+<meta name="author" content="Lorenzo Fiore" />
+<meta name="description" content="Recursivity and permutations Motivation and context  The amazing computing platform FEniCS comes packed with a lot of useful features for the automation of solution of partial differential equations. The fact that people develop such powerful software and give it to the public as open source still honestly astonishes me after years of passion about open-source-software. Social considerations aside, I recently stumbled upon an interesting feature that was not covered in the tutorials I came across, because, let&amp;rsquo;s be honest, open-source is great, but bright people definitely spend more time writing software then explaining others what they created and why." />
+
+
+
+<meta name="generator" content="Hugo 0.82.0" />
+
+<link rel="canonical" href="https://MechEngrLorenzoFiore.github.io/posts/recursivity_and_permutations/" />
+
+
+<meta property="og:title" content="Recursivity and permutations" />
+<meta property="og:description" content="Recursivity and permutations Motivation and context  The amazing computing platform FEniCS comes packed with a lot of useful features for the automation of solution of partial differential equations. The fact that people develop such powerful software and give it to the public as open source still honestly astonishes me after years of passion about open-source-software. Social considerations aside, I recently stumbled upon an interesting feature that was not covered in the tutorials I came across, because, let&rsquo;s be honest, open-source is great, but bright people definitely spend more time writing software then explaining others what they created and why." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://MechEngrLorenzoFiore.github.io/posts/recursivity_and_permutations/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-05-17T16:51:00&#43;00:00" />
+<meta property="article:modified_time" content="2024-05-17T16:51:00&#43;00:00" />
+
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Recursivity and permutations"/>
+<meta name="twitter:description" content="Recursivity and permutations Motivation and context  The amazing computing platform FEniCS comes packed with a lot of useful features for the automation of solution of partial differential equations. The fact that people develop such powerful software and give it to the public as open source still honestly astonishes me after years of passion about open-source-software. Social considerations aside, I recently stumbled upon an interesting feature that was not covered in the tutorials I came across, because, let&rsquo;s be honest, open-source is great, but bright people definitely spend more time writing software then explaining others what they created and why."/>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+<link rel="stylesheet" href="/css/icomoon.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@1.13.1/css/OverlayScrollbars.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css">
+<link rel="stylesheet" href="/css/site.css" />
+
+<style>
+  a:not(.ui.button):hover {
+    text-decoration: underline;
+  }
+
+  
+  a:not(.ui.button) {
+    color: seagreen !important;
+  }
+  
+
+  
+
+  
+  body.default {
+    
+    background-color: #f7f7f7;
+    
+
+    
+  }
+  
+
+  
+</style>
+
+
+    
+
+
+
+
+
+
+
+    
+  </head>
+
+  <body class="default">
+    
+<nav class="ui secondary menu dream-menu">
+
+  <div class="item">
+    <i class="large link bullseye icon dream-flip-toggle" title="Flip it!"></i>
+  </div>
+  <div class="item">
+    <i class="large link home icon" title="Home" onclick="window.location.href = 'https:\/\/MechEngrLorenzoFiore.github.io\/'"></i>
+  </div>
+  
+  
+  <div class="item">
+    <i class="large link search icon" onclick="toggleSearch()"></i>
+  </div>
+  
+</nav>
+
+    <div class="flip-container">
+      <div class="flipper">
+        <section class="front">
+          <div class="dream-max-width">
+            
+<div class="ui relaxed centered grid dream-grid dream-grid-single">
+  
+  
+  
+  
+
+  
+  <aside class="sixteen wide mobile sixteen wide tablet three wide computer column dream-single-aside">
+  
+    
+    <div class="ui segment toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#motivation-and-context">Motivation and context</a></li>
+    <li><a href="#challenges-i-faced">Challenges I faced</a></li>
+    <li><a href="#useful-lessons-i-learned">Useful lessons I learned</a></li>
+  </ul>
+</nav>
+    </div>
+    
+
+    
+  
+  </aside>
+  
+  <div class="sixteen wide mobile sixteen wide tablet ten wide computer column markdown-body dream-single" id="dream-save-post-as-img">
+    <section class="ui top attached segment">
+      <header>
+        <h1 class="ui large header">Recursivity and permutations<div class="sub header">
+            <div class="left">
+              @
+              
+                
+                  Lorenzo Fiore
+                
+              
+
+              | 
+                  
+                    Friday, May 17, 2024
+                  
+                
+
+              | 4 minutes read
+
+              
+            </div>
+
+            
+            <div class="dream-share">
+  <a href="#" class="save-as-image" title="Save as image" onclick="savePostAsImg()">
+    <i class="save icon"></i>
+  </a>
+  </a>
+  <a href="https://www.linkedin.com/in/lorenzo-fiore-372b83194/">
+    <i class="linkedin icon"></i>
+  </a>
+</div>
+
+
+
+
+            
+          </div>
+        </h1>
+      </header>
+
+      <article class="main">
+        
+
+        <h1 id="recursivity-and-permutations">Recursivity and permutations</h1>
+<h2 id="motivation-and-context">Motivation and context</h2>
+<ul>
+<li>The amazing computing platform FEniCS comes packed with a lot of useful features for the automation of solution of partial differential equations. The fact that people develop such powerful software and give it to the public as open source still honestly astonishes me after years of passion about open-source-software.</li>
+<li>Social considerations aside, I recently stumbled upon an interesting feature that was not covered in the tutorials I came across, because, let&rsquo;s be honest, open-source is great, but bright people definitely spend more time writing software then explaining others what they created and why.</li>
+<li>The feature I stumbled upon is re-meshing: in FEniCS it&rsquo;s possible to define a function over the mesh and drive a mesh-refinement algorithm with this input, great! I immediately took occasion to experiment with this feature and try out different approaches for mesh refinement in fracture propagation simulations.</li>
+<li>The fact is that I ended up having a couple of options I wanted to try with quite a slow model for the testing&hellip; that&rsquo;s the perfect excuse to spend a bit of time on automation! And when I say a bit I mean probably I spent as much time automating the procedure as the time I would have needed to perform the task manually. Well&hellip; at least the script is ready for the next time!</li>
+<li>The core of the automation script ended up being the task of combining a bunch of parameters in permutations to analyze the effect of the variation of each one separately on the result of the Finite Element computation.</li>
+</ul>
+<h2 id="challenges-i-faced">Challenges I faced</h2>
+<ul>
+<li>Long story short: I have a list of lists of parameters, the length of the list (and of the sub-lists) is undefined, and I want to get all the possible permutations of those, seems like a doable task but I was forces to leverage a programming functionality which I seldom see around: <strong>recursivity</strong>.</li>
+<li>Why use <strong>recursivity</strong>? Let&rsquo;s imagine the workflow to the solution of the task: for each element in the first list of parameters take each element in the second list of parameters and each element in the third and so on till the last list of parameters. Nested <strong>for cycles</strong> will do the job right?</li>
+<li>Well only if the number of parameters to vary is predefined, which is not the case here: I&rsquo;d like to run multiple parametric studies changing only some parameter of interest in each study, so I would need to manually change the <strong>for cycles</strong> nesting for each parametric study: not a geek option!</li>
+<li>The solution to this issue is in 2 hours of stackoverflow, coding, testing and asking my-self why I&rsquo;m still stubborn enough not to use ChatGPT. The outcome is a better understanding of how to use <strong>recursivity</strong> and an &ldquo;AH-AH&rdquo; moment of realization when I got it working, here is a sample code for understanding purposes:</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">parametric_studies <span style="color:#f92672">=</span> [
+    [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>],
+    [<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>],
+    [<span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">9</span>]
+]
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">permutations</span>(list_of_lists):
+    <span style="color:#66d9ef">if</span> len(list_of_lists) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+        <span style="color:#66d9ef">return</span> list_of_lists[<span style="color:#ae81ff">0</span>]
+    <span style="color:#66d9ef">else</span>:   
+        permutations_list <span style="color:#f92672">=</span> []
+        <span style="color:#66d9ef">for</span> element_upper_level <span style="color:#f92672">in</span> list_of_lists[<span style="color:#ae81ff">0</span>]:
+            <span style="color:#66d9ef">for</span> element_lower_level <span style="color:#f92672">in</span> permutations(list_of_lists[<span style="color:#ae81ff">1</span>:]):
+                permutations_list<span style="color:#f92672">.</span>append( f<span style="color:#e6db74">&#34;{element_upper_level}_{element_lower_level}&#34;</span>)
+        <span style="color:#66d9ef">return</span> permutations_list
+
+studies <span style="color:#f92672">=</span> permutations(parametric_studies)
+
+<span style="color:#66d9ef">for</span> study <span style="color:#f92672">in</span> studies:
+    <span style="color:#66d9ef">print</span>(study)
+</code></pre></div><ul>
+<li>Using <strong>recursivity</strong>, the <code>permutations</code> function is calling itself every time it needs to open a new list to iterate over its elements thus grabbing one element of each list independently from the number of lists it is fed with, brilliant!</li>
+</ul>
+<h2 id="useful-lessons-i-learned">Useful lessons I learned</h2>
+<ul>
+<li>I am perfectly aware that the time spent automating this task will be repaid only if I get a change to use it quite often, but I value the learning more then the outcome and now that it&rsquo;s ready I can use it forever, unless I forget about it&hellip; that&rsquo;s why I put all the code over here!</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">- This script is meant to execute a batch of simulations in series
+</span><span style="color:#e6db74">  with the purpose of parametric study
+</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+
+<span style="color:#75715e">#%% ---------------------------------------------------------------70</span>
+<span style="color:#75715e"># Import necessary packages</span>
+<span style="color:#75715e"># -----------------------------------------------------------------70</span>
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">import</span> sys
+<span style="color:#f92672">import</span> time
+
+<span style="color:#75715e">#%% ---------------------------------------------------------------70</span>
+<span style="color:#75715e"># Control parameters</span>
+<span style="color:#75715e"># -----------------------------------------------------------------70</span>
+
+FEM_file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Slide_Gate_Plate_adaptative_refinement_without_materials_batch.py&#34;</span>
+
+parameters_labels <span style="color:#f92672">=</span> [
+    <span style="color:#e6db74">&#34;damageRefinementThreshold&#34;</span>, 
+    <span style="color:#e6db74">&#34;beta&#34;</span>,
+    <span style="color:#e6db74">&#34;lowSpecificationsMaterialsFlag&#34;</span>, 
+    <span style="color:#e6db74">&#34;eta&#34;</span>,
+    <span style="color:#e6db74">&#34;plasticityFlag&#34;</span>
+]
+
+parametric_studies <span style="color:#f92672">=</span> [
+    [ <span style="color:#75715e"># Study influence of eta parameter</span>
+        [<span style="color:#ae81ff">0.3</span>],
+        [<span style="color:#ae81ff">0.5</span>],
+        [<span style="color:#ae81ff">1</span>],
+        [<span style="color:#ae81ff">1e6</span>, <span style="color:#ae81ff">2e6</span>, <span style="color:#ae81ff">3e6</span>, <span style="color:#ae81ff">4e6</span>],
+        [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>]
+    ]   
+]
+
+outfile <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;./Parametric_Study/Parametric_study.md&#34;</span>
+
+<span style="color:#75715e">#%% ---------------------------------------------------------------70</span>
+<span style="color:#75715e"># Auxiliary functions</span>
+<span style="color:#75715e"># -----------------------------------------------------------------70 </span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">permutations</span>(list_of_lists):
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Compute list_of_lists permutations recursively
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    
+    <span style="color:#66d9ef">if</span> len(list_of_lists) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+        <span style="color:#66d9ef">return</span> list_of_lists[<span style="color:#ae81ff">0</span>]
+    <span style="color:#66d9ef">else</span>:   
+        permutations_list <span style="color:#f92672">=</span> []
+        <span style="color:#66d9ef">for</span> element_upper_level <span style="color:#f92672">in</span> list_of_lists[<span style="color:#ae81ff">0</span>]:
+            <span style="color:#66d9ef">for</span> element_lower_level <span style="color:#f92672">in</span> permutations(list_of_lists[<span style="color:#ae81ff">1</span>:]):
+                permutations_list<span style="color:#f92672">.</span>append( f<span style="color:#e6db74">&#34;{element_upper_level}_{element_lower_level}&#34;</span>)
+        <span style="color:#66d9ef">return</span> permutations_list
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fileprint</span>(string):
+    <span style="color:#66d9ef">print</span>(string)
+    <span style="color:#66d9ef">with</span> open(outfile, <span style="color:#e6db74">&#34;a&#34;</span>) <span style="color:#66d9ef">as</span> file:
+        file<span style="color:#f92672">.</span>writelines( <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> string)
+
+<span style="color:#75715e">#%% ---------------------------------------------------------------70</span>
+<span style="color:#75715e"># Run Batch</span>
+<span style="color:#75715e"># -----------------------------------------------------------------70</span>
+
+<span style="color:#75715e"># measure elapsed time for inverse analysis procedure</span>
+tic <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()
+
+
+<span style="color:#66d9ef">for</span> study_values <span style="color:#f92672">in</span> parametric_studies:
+
+    <span style="color:#75715e"># append parameter names to parameter values </span>
+    named_study_values <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> ii <span style="color:#f92672">in</span> range(len(study_values)):
+        named_list <span style="color:#f92672">=</span> []
+        <span style="color:#66d9ef">for</span> element <span style="color:#f92672">in</span> study_values[ii]:
+            named_list<span style="color:#f92672">.</span>append(f<span style="color:#e6db74">&#34;{parameters_labels[ii]}_{element}&#34;</span>)
+        named_study_values<span style="color:#f92672">.</span>append(named_list)
+
+    <span style="color:#75715e"># run the batch</span>
+    <span style="color:#66d9ef">for</span> sim_ID <span style="color:#f92672">in</span> permutations(named_study_values):
+
+        <span style="color:#75715e"># launch the FEM with the input parameters</span>
+        <span style="color:#66d9ef">try</span>:
+            os<span style="color:#f92672">.</span>system(f<span style="color:#e6db74">&#34;python {FEM_file} {sim_ID}&#34;</span>)
+            fileprint(f<span style="color:#e6db74">&#34;Sim: {sim_ID} completed.&#34;</span>)
+        <span style="color:#66d9ef">except</span>:
+            fileprint(f<span style="color:#e6db74">&#34;Got some trouble with {sim_ID}&#34;</span>)
+        
+        fileprint(f<span style="color:#e6db74">&#34;Elapsed CPU time: {int((time.time() - tic)/60):5d} [min]&#34;</span>)
+</code></pre></div>
+      </article>
+    </section>
+
+    
+
+    
+
+    
+  </div>
+</div>
+
+
+            <footer class="ui basic center aligned segment" style="background-color: transparent;">
+              
+              <p>© 2021 - 2024 MechEngrLorenzoFiore</p>
+              
+
+              <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/g1eny0ung/hugo-theme-dream" target="_blank">Dream</a>.</p>
+
+              
+            </footer>
+          </div>
+        </section>
+        <section class="back">
+          <div class="dream-max-width">
+            <header class="ui basic very padded segment dream-header">
+  
+  <div class="ui small circular image">
+    <img src="/img/avatar_2.jpg" alt="avatar" />
+  </div>
+  
+
+  <div class="content">
+    <h1 class="ui medium header">Lorenzo Fiore&#39;s blog<div class="sub header">Leave the world a better place than you find it</div>
+    </h1>
+
+    <article class="ui horizontal list">
+      
+      <a class="item" href="/posts">
+        <i class="archive icon" title="Archives"></i>
+      </a>
+      
+      <a class="item" href="/categories">
+        <i class="th list icon" title="All Categories"></i>
+      </a>
+      <a class="item" href="/tags">
+        <i class="tags icon" title="All Tags"></i>
+      </a>
+    </article>
+
+    
+    
+    
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+    
+
+    
+
+    
+    
+    
+          <div class="dream-tags">
+          
+          
+          
+            <a class="ui label" href="/tags/3d-modelling/" title="3D modelling">
+              3D modelling
+            </a>
+          
+          
+          
+            <a class="ui label" href="/tags/automation/" title="Automation">
+              Automation
+            </a>
+          
+          
+          
+            <a class="ui label" href="/tags/cad/" title="CAD">
+              CAD
+            </a>
+          
+          
+          
+            <a class="ui label" href="/tags/computational/" title="Computational">
+              Computational
+            </a>
+          
+          
+          
+            <a class="ui label" href="/tags/digital-images/" title="Digital Images">
+              Digital Images
+            </a>
+          
+          
+          
+            <a class="ui label" href="/tags/fem/" title="FEM">
+              FEM
+            </a>
+          
+          </div>
+    
+
+    
+  </div>
+</header>
+
+
+<div class="ui relaxed grid dream-grid dream-back">
+  
+  
+  
+  <div class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    <article class="ui segment markdown-body">
+      <div class="ui medium header">Once a Scout, always a Scout!</div>
+      <p>I&rsquo;m a proud member of the World Wide Scout Movement.</p>
+<blockquote>
+<p>Try and leave this world a little better than you found it,
+and when your turn comes to die,
+you can die happy in feeling that at any rate,
+you have not wasted your time but have done your best.</p>
+</blockquote>
+<blockquote>
+<p>Robert Baden-Powell, fouder of the Scout Movement</p>
+</blockquote>
+    </article>
+  </div>
+  
+  <div class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    <article class="ui segment markdown-body">
+      <div class="ui medium header">About me</div>
+      <p>If you came up here you want to know a little bit more about myself.
+That&rsquo;s awesome!</p>
+<p>I&rsquo;m a Mechanical Engineer, a curious person and a maker!
+I don&rsquo;t waste any time trying to learn everything I can about the
+topic I love the most, be it mechanical design, programming,
+old school hand abilities, music, languages, you name it!</p>
+<p>This websites purpose is to share my knowledge and experience hoping
+this would be of any help for anyone facing the challenges I face.
+Enjoy and let&rsquo;s stay in contact!</p>
+    </article>
+  </div>
+  
+
+  <div class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    <article class="ui segment">
+      <div class="ui medium header">Social Links</div>
+      <nav class="ui secondary menu dream-menu dream-socials">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <div class="item">
+    <a href="https://www.linkedin.com/in/lorenzo-fiore-372b83194" target="_blank">
+      <i class="large linkedin icon" title="Linkedin"></i>
+    </a>
+  </div>
+  
+
+  
+  <div class="item">
+    <a href="https://github.com/MechEngrLorenzoFiore" target="_blank">
+      <i class="large github icon" title="GitHub"></i>
+    </a>
+  </div>
+  
+
+  
+
+  
+</nav>
+
+    </article>
+  </div>
+
+  <div class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    
+  </div>
+
+  
+  
+</div>
+
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script>
+  window.defaultDark =  null 
+  window.backgroundDark =  null 
+  window.backgroundImageDark =  null 
+  window.darkNav =  null 
+  window.hasTwitterEmbed =  null 
+  window.maxTags =  null 
+
+  if (window.hasTwitterEmbed) {
+    
+    window.twttr = (function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {}
+      if (d.getElementById(id)) return t
+      js = d.createElement(s)
+      js.id = id
+      js.src = 'https://platform.twitter.com/widgets.js'
+      fjs.parentNode.insertBefore(js, fjs)
+
+      t._e = []
+      t.ready = function (f) {
+        t._e.push(f)
+      }
+
+      return t
+    })(document, 'script', 'twitter-wjs')
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@1.13.1/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/js/header.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/theme.js"></script>
+
+    
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js"></script>
+<script src="/js/post.js" defer></script>
+
+
+    
+    <div class="ui inverted segment" id="dream-search">
+  <div class="ui search">
+    <div class="ui transparent input">
+      <input class="prompt" type="text" placeholder="Search" />
+    </div>
+    <div class="results"></div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    $.getJSON('https:\/\/MechEngrLorenzoFiore.github.io\//index.json', function (data) {
+      $('.ui.search').search({
+        source: data,
+        searchFields: ['title'],
+        showNoResults: true,
+      })
+    })
+  })
+</script>
+<script src="/js/search.js"></script>
+
+    
+
+    
+
+    
+  </body>
+</html>
